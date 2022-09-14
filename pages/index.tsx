@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { Button, Input, Checkbox, Form } from "antd";
@@ -8,6 +9,10 @@ import myStyles from '../styles/MyComponent.module.css'
 
 
 const Home: NextPage = () => {
+  const router = useRouter();
+  const clickLogin = () =>{
+    router.push('/home')
+  }
   return (
     <div className={styles.container}>
       {/* <Head>
@@ -22,18 +27,18 @@ const Home: NextPage = () => {
         </div>
         <div style={{'marginBottom': 10}}>
           <div>
-            <Input className={myStyles.cspan} size='large' placeholder='Email'></Input>
+            <Input className={myStyles.cspan} size='large' placeholder='อีเมล'></Input>
           </div>
           <div>
-            <Input className={myStyles.cspan} size='large' type={'password'} placeholder='Password'></Input>
+            <Input className={myStyles.cspan} size='large' type={'password'} placeholder='รหัสผ่าน'></Input>
           </div>
           <div>
-          <Checkbox>Remember me</Checkbox>
+          <Checkbox>จดจำไว้ในระบบ</Checkbox>
           </div>
         </div>
         <div>
           <div>
-            <Button className={`${myStyles.cspan} ${myStyles.cbutton}`} type="primary">เข้าสู่ระบบ</Button>
+            <Button className={`${myStyles.cspan} ${myStyles.cbutton}`} type="primary" onClick={() => clickLogin()}>เข้าสู่ระบบ</Button>
           </div>
           <div>
             <Link href={'/register'}>
@@ -42,19 +47,6 @@ const Home: NextPage = () => {
           </div>
         </div>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
     </div>
   )
 }

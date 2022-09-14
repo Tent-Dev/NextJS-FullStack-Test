@@ -5,3 +5,11 @@
 .cspan{
     margin-bottom: 10px;
 }
+
+.ellipsiscard {
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+}
