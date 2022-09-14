@@ -1,5 +1,11 @@
+
 .cbutton {
+    --btncolor: #52118f;
+    /* --btncolor: #52118f; */
     width: 100%;
+    background-color: var(--btncolor);
+    border-color: var(--btncolor);
+    color: white;
 }
 
 .cspan{

@@ -8,6 +8,7 @@ import { Button, Input, Checkbox, Form } from "antd";
 import myStyles from '../styles/MyComponent.module.css'
 
 
+
 const Home: NextPage = () => {
   const router = useRouter();
   const clickLogin = () =>{
@@ -32,9 +33,9 @@ const Home: NextPage = () => {
           <div>
             <Input className={myStyles.cspan} size='large' type={'password'} placeholder='รหัสผ่าน'></Input>
           </div>
-          <div>
+          {/* <div>
           <Checkbox>จดจำไว้ในระบบ</Checkbox>
-          </div>
+          </div> */}
         </div>
         <div>
           <div>
@@ -42,7 +43,7 @@ const Home: NextPage = () => {
           </div>
           <div>
             <Link href={'/register'}>
-              <Button type="primary">สร้างบัญชีผู้ใช้</Button>
+              <Button className={`${myStyles.cbutton}`} type="primary">สร้างบัญชีผู้ใช้</Button>
             </Link>
           </div>
         </div>
