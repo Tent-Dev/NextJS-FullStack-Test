@@ -21,7 +21,7 @@ const Register: NextPage = () => {
     </Head> */}
 
     <main className={styles.main}>
-      <div>
+      <div style={{'marginBottom': 10, 'fontSize': 20, 'fontWeight': 'bold'}}>
         สร้างบัญชีผู้ใช้
       </div>
       <div style={{'marginBottom': 10}}>
