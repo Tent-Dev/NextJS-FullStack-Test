@@ -30,10 +30,10 @@ const Register: NextPage = () => {
         // onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <div style={{'marginBottom': 10, 'fontSize': 20, 'fontWeight': 'bold'}}>
+        <div style={{'marginBottom': 24, 'fontSize': 20, 'fontWeight': 'bold'}}>
           สร้างบัญชีผู้ใช้
         </div>
-        <div style={{'marginBottom': 10}}>
+        <div>
           <div>
             <Form.Item
               name="email"
@@ -95,19 +95,6 @@ const Register: NextPage = () => {
         </div>
       </Form>
     </main>
-
-    <footer className={styles.footer}>
-      <a
-        href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Powered by{' '}
-        <span className={styles.logo}>
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </span>
-      </a>
-    </footer>
   </div>
   )
 }
