@@ -18,7 +18,9 @@ const ItemBox = (props: any) => {
     setBtntext('Joined');
     setBtndisable(true);
 
-    props.data.registered = props.data.registered+1;
+    // props.data.registered = props.data.registered+1;
+
+    props.updateData(props.data.id);
   }
 
   const checkJoin = () =>{

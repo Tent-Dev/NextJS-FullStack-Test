@@ -26,20 +26,47 @@ const Home: NextPage = () => {
         <div>
           <Image src="/logo.png" width="128px" height="64px" />
         </div>
-        <div style={{'marginBottom': 10}}>
+        <Form
+          name="basic"
+          initialValues={{
+            remember: true,
+          }}
+          onFinish={() => clickLogin()}
+          // onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+        <div style={{'marginTop': 24}}>
+        
           <div>
+          <Form.Item
+            name="username"
+            rules={[
+              {
+                required: true,
+                message: 'โปรดกรอกอีเมล',
+              },
+            ]}
+          >
             <Input className={myStyles.cspan} size='large' placeholder='อีเมล'></Input>
+            </Form.Item>
           </div>
           <div>
+          <Form.Item
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: 'โปรดกรอกรหัสผ่าน',
+              },
+            ]}
+          >
             <Input className={myStyles.cspan} size='large' type={'password'} placeholder='รหัสผ่าน'></Input>
+          </Form.Item>
           </div>
-          {/* <div>
-          <Checkbox>จดจำไว้ในระบบ</Checkbox>
-          </div> */}
         </div>
         <div>
           <div>
-            <Button className={`${myStyles.cspan} ${myStyles.cbutton}`} type="primary" onClick={() => clickLogin()}>เข้าสู่ระบบ</Button>
+            <Button htmlType="submit" className={`${myStyles.cspan} ${myStyles.cbutton}`} type="primary" onClick={() => null}>เข้าสู่ระบบ</Button>
           </div>
           <div>
             <Link href={'/register'}>
@@ -47,6 +74,7 @@ const Home: NextPage = () => {
             </Link>
           </div>
         </div>
+        </Form>
       </main>
     </div>
   )

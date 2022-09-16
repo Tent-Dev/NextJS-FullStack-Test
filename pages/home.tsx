@@ -12,6 +12,8 @@ import dataDummy from '../components/dummydata'
 import { useEffect, useState } from 'react';
 import { Spin, Empty } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
+import HeaderBar from '../components/header';
+
 
 const antIcon = (
   <LoadingOutlined
@@ -42,27 +44,25 @@ const HomeApp: NextPage = () => {
     }, 1000)
   },[])
 
+  const updateData = (id: number) =>{
+    let datastore = dataparty;
+    console.log('Update data ' + id);
+    const newData = datastore.findIndex( (obj: { id: number; }) => obj.id == id);
+
+    datastore[newData].registered = datastore[newData].registered+1
+    Setdataparty(datastore);
+  }
+
   return(
     <>
-      <PageHeader
-        className="site-page-header"
-        // title="ปาร์ตี้ทั้งหมด"
-        style={{
-          'backgroundColor': '#1d004f',
-        }}
-        children={
-        <>
-        <div style={{'display':'flex', 'alignItems' : 'center', 'justifyContent': 'center'}}>
-          <div style={{'margin' : 'auto'}}>
-            <p style={{'color': 'white', 'textAlign': 'center', 'fontSize': 20, 'marginBottom': 0}}>ปาร์ตี้ทั้งหมด</p>
-          </div>
-          <div style={{'position': 'absolute', 'right': 0, 'marginRight': 10}}>
-          <Button className={`${myStyles.cbutton}`} type="primary" icon={<AiOutlinePlus />} onClick={() => clickCreate()} size={'large'} />
-          <Button className={`${myStyles.cbutton}`} type="default" icon={<AiOutlineLogout />} onClick={() => clickLogout()} size={'large'} style={{'marginLeft': 10}} />
-            </div>
-        </div>
-        </>
-      }
+      <HeaderBar
+        headerText='สร้างปาร์ตี้'
+        childElement={
+          <>
+            <Button className={`${myStyles.cbutton}`} type="primary" icon={<AiOutlinePlus />} onClick={() => clickCreate()} size={'large'} />
+            <Button className={`${myStyles.cbutton}`} type="default" icon={<AiOutlineLogout />} onClick={() => clickLogout()} size={'large'} style={{'marginLeft': 10}} />
+          </>
+        }
       />
       <div className={styles.container}>
         <main className={styles.main}>
@@ -71,7 +71,7 @@ const HomeApp: NextPage = () => {
           {dataparty.length == 0 && !showspin ? <Empty description='ไม่พบราการปาร์ตี้' /> :
             <Row gutter={[16, 16]}>
               {dataparty.map((element: { id: any; }) => (
-                <ItemBox data={element} key={element.id} />
+                <ItemBox data={element} key={element.id} updateData={updateData}/>
               ))}
             </Row>
           }

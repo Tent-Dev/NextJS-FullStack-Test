@@ -1,36 +1,3 @@
-// const description: string = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
-
-// const numberOfData: number = 20;
-
-// let dataDummy: any[] = [];
-
-// createData();
-
-// async function callDummy() {
-
-//   let element = {};
-
-//   for (let index = 0; index < numberOfData; index++) {
-//     element = {
-//       id: index,
-//       description: description,
-//       registered: await randomNumber(),
-//       maxguests: 5,
-//       image: ''
-//     };
-//     dataDummy.push(element);
-//   }
-// }
-
-// async function randomNumber() {
-//   return Math.floor(Math.random() * 6);
-// }
-
-// async function createData() {
-//   await callDummy();
-//   console.log(dataDummy);
-// }
-
 const dataDummy = [
   {
     id: 0,

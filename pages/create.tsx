@@ -7,6 +7,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { Button, Input, Checkbox, Form, PageHeader } from "antd";
 import myStyles from '../styles/MyComponent.module.css'
+import HeaderBar from '../components/header';
 
 const CreateParty: NextPage = () => {
   const router = useRouter();
@@ -15,7 +16,7 @@ const CreateParty: NextPage = () => {
   }
   return(
     <>
-    <PageHeader
+    {/* <PageHeader
         className="site-page-header"
         // title="ปาร์ตี้ทั้งหมด"
         style={{
@@ -33,23 +34,55 @@ const CreateParty: NextPage = () => {
         </div>
         </>
         }
-      />
+      /> */}
+
+      <HeaderBar headerText='สร้างปาร์ตี้' backBtn={true}/>
 
       <div className={styles.container}>
     <main className={styles.main}>
+    <Form
+          name="basic"
+          initialValues={{
+            remember: true,
+          }}
+          onFinish={() => clickCreate()}
+          // onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
       <div>
         <div>
-          <Input className={myStyles.cspan} size='large' placeholder='ชื่อปาร์ตี้'></Input>
+          <Form.Item
+            name="partyname"
+            rules={[
+              {
+                required: true,
+                message: 'โปรดกรอกชื่อปาร์ตี้',
+              },
+            ]}
+          >
+            <Input className={myStyles.cspan} size='large' placeholder='ชื่อปาร์ตี้'></Input>
+          </Form.Item>
         </div>
         <div>
-        <Input className={myStyles.cspan} size='large' placeholder='จำนวนคนที่ขาด'></Input>
+          <Form.Item
+            name="maxguests"
+            rules={[
+              {
+                required: true,
+                message: 'โปรดกรอกจำนวนคนที่ขาด',
+              },
+            ]}
+          >
+            <Input className={myStyles.cspan} size='large' placeholder='จำนวนคนที่ขาด'></Input>
+          </Form.Item>
         </div>
       </div>
       <div>
         <div>
-          <Button className={`${myStyles.cspan} ${myStyles.cbutton}`} type="primary" onClick={() => clickCreate()}>สร้างปาร์ตี้</Button>
+          <Button htmlType="submit" className={`${myStyles.cspan} ${myStyles.cbutton}`} type="primary">สร้างปาร์ตี้</Button>
         </div>
       </div>
+      </Form>
     </main>
   </div>
   </>
