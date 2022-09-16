@@ -21,28 +21,79 @@ const Register: NextPage = () => {
     </Head> */}
 
     <main className={styles.main}>
-      <div style={{'marginBottom': 10, 'fontSize': 20, 'fontWeight': 'bold'}}>
-        สร้างบัญชีผู้ใช้
-      </div>
-      <div style={{'marginBottom': 10}}>
-        <div>
-          <Input className={myStyles.cspan} size='large' placeholder='อีเมล'></Input>
+    <Form
+        name="basic"
+        initialValues={{
+          remember: true,
+        }}
+        onFinish={() => clickRegister()}
+        // onFinishFailed={onFinishFailed}
+        autoComplete="off"
+      >
+        <div style={{'marginBottom': 10, 'fontSize': 20, 'fontWeight': 'bold'}}>
+          สร้างบัญชีผู้ใช้
+        </div>
+        <div style={{'marginBottom': 10}}>
+          <div>
+            <Form.Item
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: 'โปรดกรอกอีเมล',
+                },
+              ]}
+            >
+              <Input className={myStyles.cspan} size='large' placeholder='อีเมล'></Input>
+            </Form.Item>
+          </div>
+          <div>
+            <Form.Item
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: 'โปรดกรอกรหัสผ่าน',
+                },
+              ]}
+            >
+              <Input className={myStyles.cspan} size='large' type={'password'} placeholder='รหัสผ่าน'></Input>
+            </Form.Item>
+          </div>
+          <div>
+          <Form.Item
+            name="confirmpassword"
+            rules={[
+              {
+                required: true,
+                message: 'โปรดกรอกรหัสผ่านอีกครั้ง',
+              },
+            ]}
+          >
+            <Input className={myStyles.cspan} size='large' type={'password'} placeholder='ยืนยันรหัสผ่าน'></Input>
+          </Form.Item>
+          </div>
+          <div>
+          <Form.Item
+            name="accepttc"
+            valuePropName="checked"
+            rules={[
+              {
+                validator: (_, value) =>
+                  value ? Promise.resolve() : Promise.reject(new Error('โปรดยอมรับเงื่อนไข')),
+              },
+            ]}
+          >
+          <Checkbox>ฉันยอมรับเงื่อนไขและข้อตกลงการใช้งาน</Checkbox>
+          </Form.Item>
+          </div>
         </div>
         <div>
-          <Input className={myStyles.cspan} size='large' type={'password'} placeholder='รหัสผ่าน'></Input>
+          <div>
+            <Button htmlType="submit" className={`${myStyles.cspan} ${myStyles.cbutton}`} type="primary">ยืนยัน</Button>
+          </div>
         </div>
-        <div>
-        <Input className={myStyles.cspan} size='large' type={'password'} placeholder='ยืนยันรหัสผ่าน'></Input>
-        </div>
-        <div>
-        <Checkbox>ฉันยอมรับเงื่อนไขและข้อตกลงการใช้งาน</Checkbox>
-        </div>
-      </div>
-      <div>
-        <div>
-          <Button className={`${myStyles.cspan} ${myStyles.cbutton}`} type="primary" onClick={() => clickRegister()}>ยืนยัน</Button>
-        </div>
-      </div>
+      </Form>
     </main>
 
     <footer className={styles.footer}>
