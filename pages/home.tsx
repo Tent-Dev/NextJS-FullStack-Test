@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Link from 'next/link'
 import Head from 'next/head'
 import Image from 'next/image'
-import { AiOutlinePlus, AiOutlineLogout } from "react-icons/ai";
+import { AiOutlinePlus, AiOutlineLogout, AiOutlineUser } from "react-icons/ai";
 import { useRouter } from 'next/router'
 import styles from '../styles/Home.module.css'
 import { Button, Input, Checkbox, Form, Card, PageHeader, Row } from "antd";
@@ -10,7 +10,7 @@ import myStyles from '../styles/MyComponent.module.css'
 import ItemBox from '../components/itembox'
 import dataDummy from '../components/dummydata'
 import { useEffect, useState } from 'react';
-import { Spin, Empty } from 'antd';
+import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import HeaderBar from '../components/header';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -29,12 +29,9 @@ const HomeApp: NextPage = () => {
   const [showspin,Setshowspin] = useState(true);
   const [hasmore,Sethasmore] = useState(true);
   const router = useRouter();
+
   const clickCreate = () =>{
     router.push('/create')
-  }
-
-  const clickLogout = () =>{
-    router.push('/')
   }
 
   useEffect(() =>{
@@ -69,7 +66,6 @@ const HomeApp: NextPage = () => {
         childElement={
           <>
             <Button className={`${myStyles.cbutton}`} type="primary" icon={<AiOutlinePlus />} onClick={() => clickCreate()} size={'large'} />
-            <Button className={`${myStyles.cbutton}`} type="default" icon={<AiOutlineLogout />} onClick={() => clickLogout()} size={'large'} style={{'marginLeft': 10}} />
           </>
         }
       />
