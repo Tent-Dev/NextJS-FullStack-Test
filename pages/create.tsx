@@ -44,26 +44,6 @@ const CreateParty: NextPage = () => {
 
   return(
     <>
-    {/* <PageHeader
-        className="site-page-header"
-        // title="ปาร์ตี้ทั้งหมด"
-        style={{
-          'backgroundColor': '#1d004f',
-        }}
-        children={
-        <>
-        <div style={{'display':'flex', 'alignItems' : 'center', 'justifyContent': 'center'}}>
-            <div style={{'position': 'absolute', 'left': 0, 'marginLeft': 10}}>
-                <AiOutlineArrowLeft color='white' onClick={() => router.back()} size='30'/>
-            </div>
-          <div style={{'margin' : 'auto'}}>
-            <p style={{'color': 'white', 'textAlign': 'center', 'fontSize': 20, 'marginBottom': 0}}>สร้างปาร์ตี้</p>
-          </div>
-        </div>
-        </>
-        }
-      /> */}
-
       <HeaderBar headerText='สร้างปาร์ตี้' backBtn={true}/>
 
       <div className={styles.container}>
