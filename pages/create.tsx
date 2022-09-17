@@ -8,12 +8,40 @@ import styles from '../styles/Home.module.css'
 import { Button, Input, Checkbox, Form, PageHeader } from "antd";
 import myStyles from '../styles/MyComponent.module.css'
 import HeaderBar from '../components/header';
+import { useState } from 'react'
 
 const CreateParty: NextPage = () => {
+  const [loadings, setLoadings] = useState([]);
   const router = useRouter();
-  const clickCreate = () =>{
-    router.back();
+
+
+  const clickCreate = async () =>{
+    await enterLoading(0);
+
+    setTimeout(() =>{
+      router.back();
+     }, 6000)
+
   }
+
+  const enterLoading = async (index: number) => {
+
+    setLoadings((prevLoadings) => {
+      const newLoadings: any = [...prevLoadings];
+      newLoadings[index] = true;
+      return newLoadings;
+    });
+
+    setTimeout(() => {
+      setLoadings((prevLoadings) => {
+        const newLoadings: any = [...prevLoadings];
+        newLoadings[index] = false;
+        return newLoadings;
+      });
+    }, 6000);
+
+  };
+
   return(
     <>
     {/* <PageHeader
@@ -79,7 +107,14 @@ const CreateParty: NextPage = () => {
       </div>
       <div>
         <div>
-          <Button htmlType="submit" className={`${myStyles.cspan} ${myStyles.cbutton}`} type="primary">สร้างปาร์ตี้</Button>
+          <Button
+            htmlType="submit"
+            className={`${myStyles.cspan} ${myStyles.cbutton}`}
+            type="primary"
+            loading={loadings[0]}
+          >
+            สร้างปาร์ตี้
+          </Button>
         </div>
       </div>
       </Form>

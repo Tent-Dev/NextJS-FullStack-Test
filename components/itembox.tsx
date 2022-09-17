@@ -12,15 +12,21 @@ const ItemBox = (props: any) => {
 
   const [btntext,setBtntext] = useState('Join');
   const [btndisable,setBtndisable] = useState(true);
+  const [loadings, setLoadings] = useState([]);
 
-  const clickJoin = () =>{
-    console.log('Join party ' + props.data.id);
-    setBtntext('Joined');
-    setBtndisable(true);
+  const clickJoin = async () =>{
 
-    // props.data.registered = props.data.registered+1;
+    await enterLoading(0);
 
-    props.updateData(props.data.id);
+    setTimeout(() =>{
+      console.log('Join party ' + props.data.id);
+      setBtntext('Joined');
+      setBtndisable(true);
+
+      // props.data.registered = props.data.registered+1;
+
+      props.updateData(props.data.id);
+     }, 3000)
   }
 
   const checkJoin = () =>{
@@ -32,6 +38,24 @@ const ItemBox = (props: any) => {
   useEffect(() =>{
     checkJoin();
   },[])
+
+  const enterLoading = async (index: number) => {
+
+    setLoadings((prevLoadings) => {
+      const newLoadings: any = [...prevLoadings];
+      newLoadings[index] = true;
+      return newLoadings;
+    });
+
+    setTimeout(() => {
+      setLoadings((prevLoadings) => {
+        const newLoadings: any = [...prevLoadings];
+        newLoadings[index] = false;
+        return newLoadings;
+      });
+    }, 3000);
+
+  };
 
     return(
     <Col span={6} xl={6} md={12} xs={24}>
@@ -67,6 +91,7 @@ const ItemBox = (props: any) => {
             className={`${myStyles.cbutton}`}
             disabled={btndisable}
             onClick={() => clickJoin()}
+            loading={loadings[0]}
           >{btntext}</Button>
         </div>
       </div>

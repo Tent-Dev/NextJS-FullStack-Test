@@ -6,12 +6,39 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { Button, Input, Checkbox, Form } from "antd";
 import myStyles from '../styles/MyComponent.module.css'
+import { useState } from 'react'
 
 const Register: NextPage = () => {
+  const [loadings, setLoadings] = useState([]);
   const router = useRouter();
-  const clickRegister = () =>{
-    router.push('/')
+
+  const clickRegister = async () =>{
+    await enterLoading(0);
+
+    setTimeout(() =>{
+     router.push('/')
+    }, 6000)
   }
+
+  const enterLoading = async (index: number) => {
+
+    setLoadings((prevLoadings) => {
+      const newLoadings: any = [...prevLoadings];
+      newLoadings[index] = true;
+      return newLoadings;
+    });
+
+    setTimeout(() => {
+      setLoadings((prevLoadings) => {
+        const newLoadings: any = [...prevLoadings];
+        newLoadings[index] = false;
+        return newLoadings;
+      });
+    }, 6000);
+
+  };
+
+
   return(
       <div className={styles.container}>
     {/* <Head>
@@ -90,7 +117,14 @@ const Register: NextPage = () => {
         </div>
         <div>
           <div>
-            <Button htmlType="submit" className={`${myStyles.cspan} ${myStyles.cbutton}`} type="primary">ยืนยัน</Button>
+            <Button
+              htmlType="submit"
+              className={`${myStyles.cspan} ${myStyles.cbutton}`}
+              type="primary"
+              loading={loadings[0]}
+            >
+              ยืนยัน
+            </Button>
           </div>
         </div>
       </Form>
