@@ -1,11 +1,17 @@
 
-.cbutton {
+.cbutton, .cbutton_red {
     --btncolor: #52118f;
     /* --btncolor: #52118f; */
     width: 100%;
     background-color: var(--btncolor);
     border-color: var(--btncolor);
     color: white;
+}
+
+.cbutton_red {
+    --btncolor: #ff4d4f;
+    background-color: var(--btncolor);
+    border-color: var(--btncolor)
 }
 
 .cspan{

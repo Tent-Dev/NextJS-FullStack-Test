@@ -15,7 +15,8 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
     "react-infinite-scroll-component": "^6.1.0",
-    "react-lines-ellipsis": "^0.15.3"
+    "react-lines-ellipsis": "^0.15.3",
+    "sweetalert2": "^11.4.33"
   },
   "devDependencies": {
     "@types/node": "18.7.18",

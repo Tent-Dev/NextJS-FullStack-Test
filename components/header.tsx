@@ -1,6 +1,7 @@
 import { Button, Dropdown, Menu, PageHeader } from "antd";
 import { AiOutlineArrowLeft, AiOutlineLogout, AiOutlineUser, AiOutlineProfile } from "react-icons/ai";
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import myStyles from '../styles/MyComponent.module.css'
 
 
@@ -20,9 +21,10 @@ const HeaderBar = (props: any) => {
             key: '1',
             icon: <AiOutlineProfile/>,
             label: (
-              <a target="_blank" rel="noopener noreferrer" href="#">
+
+              <Link href="/mypartylist">
                 รายการปาร์ตี้ของฉัน
-              </a>
+              </Link>
             ),
           },
           {

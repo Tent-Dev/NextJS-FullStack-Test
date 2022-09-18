@@ -62,7 +62,7 @@ const HomeApp: NextPage = () => {
   return(
     <>
       <HeaderBar
-        headerText='สร้างปาร์ตี้'
+        headerText='รายการปาร์ตี้'
         childElement={
           <>
             <Button className={`${myStyles.cbutton}`} type="primary" icon={<AiOutlinePlus />} onClick={() => clickCreate()} size={'large'} />
@@ -97,7 +97,7 @@ const HomeApp: NextPage = () => {
         >
           <Row gutter={[16, 16]}>
             {dataparty.map((element: { id: any; }) => (
-              <ItemBox data={element} key={element.id} updateData={updateData}/>
+              <ItemBox mode={'join'} data={element} key={element.id} updateData={updateData}/>
             ))}
           </Row>
         </InfiniteScroll>
