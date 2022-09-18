@@ -139,8 +139,9 @@ const MyPartyList: NextPage = (props: any) => {
             <Tabs
                 defaultActiveKey="1"
                 // type="card"
-                size={'small'}
+                size={'large'}
                 centered={true}
+                tabBarStyle={{color: '#52118f'}}
                 onTabClick={(key) => {Setdatatype(key), Setshowspin(true), console.log(key)}}
                 items={[
                     {

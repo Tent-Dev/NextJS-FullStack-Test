@@ -25,6 +25,7 @@ const antIcon = (
 );
 
 const HomeApp: NextPage = () => {
+  let dataDummyInit = dataDummy;
   const [dataparty,Setdataparty]: any[] = useState([]);
   const [showspin,Setshowspin] = useState(true);
   const [hasmore,Sethasmore] = useState(true);
@@ -51,7 +52,7 @@ const HomeApp: NextPage = () => {
   }
 
   const fetchData = async () =>{
-    Setdataparty(dataDummy);
+    Setdataparty(dataDummyInit);
 
     setTimeout(() =>{
       Sethasmore(false);
