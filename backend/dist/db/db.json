@@ -47,6 +47,13 @@
       "lastName": "Borsub",
       "email": "Angel_flood@hotmail.com",
       "password": "1234"
+    },
+    {
+      "userId": 8,
+      "firstName": "Chutipas",
+      "lastName": "Borsub",
+      "email": "Angel_flood@hotmail.com",
+      "password": "1234"
     }
   ]
 }

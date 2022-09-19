@@ -31,7 +31,7 @@ router.get('/user/:userId', async (req, res) =>{
    res.send(users);
 });
 
-router.post('/add', async (req, res) => {
+router.post('/user/add', async (req, res) => {
    const userdata = {
       userId : req.body.userId,
       firstName : req.body.firstName,
@@ -47,7 +47,7 @@ await db.write();
 res.send(req.body);
 });
 
-router.put('/update/:id', async (req, res) =>{
+router.put('/user/update/:id', async (req, res) =>{
    await db.read();
 
    const users = db.data?.user.filter((obj: { userId: number }) =>{
@@ -64,7 +64,7 @@ router.put('/update/:id', async (req, res) =>{
 }
    
 );
-router.delete('/delete/:id', async (req, res) =>{
+router.delete('/user/delete/:id', async (req, res) =>{
    await db.read();
 
    let userId_num = Number(req.params.id);

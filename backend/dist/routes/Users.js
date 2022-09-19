@@ -20,7 +20,7 @@ router.get('/user/:userId', async (req, res) => {
     });
     res.send(users);
 });
-router.post('/add', async (req, res) => {
+router.post('/user/add', async (req, res) => {
     var _a;
     const userdata = {
         userId: req.body.userId,
@@ -35,7 +35,7 @@ router.post('/add', async (req, res) => {
     // db.data?.user.push(userdata).last().write()
     res.send(req.body);
 });
-router.put('/update/:id', async (req, res) => {
+router.put('/user/update/:id', async (req, res) => {
     var _a;
     await db.read();
     const users = (_a = db.data) === null || _a === void 0 ? void 0 : _a.user.filter((obj) => {
@@ -48,7 +48,7 @@ router.put('/update/:id', async (req, res) => {
     await db.write();
     res.send(users);
 });
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/user/delete/:id', async (req, res) => {
     var _a, _b, _c;
     await db.read();
     let userId_num = Number(req.params.id);
