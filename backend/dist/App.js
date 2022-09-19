@@ -1,12 +1,7 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-var bodyParser = require('body-parser');
-const app = (0, express_1.default)();
-const userRouter = require("./routes/Users");
+import express from 'express';
+import bodyParser from "body-parser";
+import userRouter from './routes/Users.js';
+const app = express();
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });

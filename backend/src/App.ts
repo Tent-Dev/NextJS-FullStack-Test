@@ -1,7 +1,8 @@
 import express, { Application, Request, Response } from 'express'
-var bodyParser = require('body-parser')
+import bodyParser from "body-parser";
+import userRouter from './routes/Users.js'
+
 const app = express();
-const userRouter = require("./routes/Users");
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
