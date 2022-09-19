@@ -1,50 +1,15 @@
 {
   "user": [
     {
-      "userId": 2,
+      "userId": 0,
       "firstName": "Chutipas",
       "lastName": "Borsub",
       "email": "Angel_flood@hotmail.com",
       "password": "1234"
     },
     {
-      "userId": 3,
-      "firstName": "Chutipas",
-      "lastName": "Borsub",
-      "email": "Angel_flood@hotmail.com",
-      "password": "1234"
-    },
-    {
-      "userId": 4,
-      "firstName": "Chutipas",
-      "lastName": "Borsub",
-      "email": "Angel_flood@hotmail.com",
-      "password": "1234"
-    },
-    {
-      "userId": 5,
-      "firstName": "Chutipas",
-      "lastName": "Borsub",
-      "email": "Angel_flood@hotmail.com",
-      "password": "1234"
-    },
-    {
-      "userId": 6,
-      "firstName": "Chutipas",
-      "lastName": "Borsub",
-      "email": "Angel_flood@hotmail.com",
-      "password": "1234"
-    },
-    {
-      "userId": 7,
-      "firstName": "Chutipas",
-      "lastName": "Borsub",
-      "email": "Angel_flood@hotmail.com",
-      "password": "1234"
-    },
-    {
-      "userId": 8,
-      "firstName": "Chutipas",
+      "userId": 1,
+      "firstName": "Test",
       "lastName": "Borsub",
       "email": "Angel_flood@hotmail.com",
       "password": "1234"
@@ -52,19 +17,11 @@
   ],
   "party": [
     {
-      "partyId": 2,
+      "partyId": 0,
+      "creatorId": 1,
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
       "registered": 0,
-      "maxguests": 5,
-      "image": "",
-      "creatorId": 2
-    },
-    {
-      "partyId": 3,
-      "creatorId": 2,
-      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
-      "registered": 0,
-      "maxguests": 100,
+      "maxguests": 20,
       "image": ""
     }
   ]

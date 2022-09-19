@@ -9,6 +9,11 @@ const router = express.Router();
 // const db = new Low(adapter)
 // const { user, party } = db.data;
 router.get('/', (req, res) => res.send('Hello !'));
+router.get('/user', async (req, res) => {
+    await db.read();
+    const users = db.data.user;
+    res.send(users);
+});
 router.get('/user/:userId', async (req, res) => {
     await db.read();
     const users = db.data.user.find((obj) => {
@@ -20,18 +25,19 @@ router.get('/user/:userId', async (req, res) => {
     res.send(users);
 });
 router.post('/user/add', async (req, res) => {
+    await db.read();
+    let AUTO_INCREMENT = db.data.user[db.data.user.length - 1];
     const userdata = {
-        userId: req.body.userId,
+        userId: AUTO_INCREMENT !== undefined ? AUTO_INCREMENT.userId + 1 : 0,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
         password: req.body.password
     };
-    await db.read();
     await db.data.user.push(userdata);
     await db.write();
     // db.data.user.push(userdata).last().write()
-    res.send(req.body);
+    res.send(userdata);
 });
 router.put('/user/update/:userId', async (req, res) => {
     await db.read();
@@ -59,10 +65,18 @@ router.delete('/user/delete/:userId', async (req, res) => {
     db.data.user = _.reject(db.data.user, function (el) {
         return el.userId === userId_num;
     });
+    db.data.party = _.reject(db.data.party, function (el) {
+        return el.creatorId === userId_num;
+    });
     await db.write();
     res.send(db.data.user);
 });
 // Party
+router.get('/party', async (req, res) => {
+    await db.read();
+    const partys = db.data.party;
+    res.send(partys);
+});
 router.get('/party/:partyId', async (req, res) => {
     await db.read();
     const partys = db.data.party.find((obj) => {
@@ -74,19 +88,20 @@ router.get('/party/:partyId', async (req, res) => {
     res.send(partys);
 });
 router.post('/party/add', async (req, res) => {
+    await db.read();
+    let AUTO_INCREMENT = db.data.party[db.data.party.length - 1];
     const partydata = {
-        partyId: req.body.partyId,
+        partyId: AUTO_INCREMENT !== undefined ? AUTO_INCREMENT.partyId + 1 : 0,
         creatorId: req.body.creatorId,
         description: req.body.description || 'ไม่มีรายละเอียดปาร์ตี้',
         registered: 0,
         maxguests: req.body.maxguests || 0,
         image: req.body.image || ''
     };
-    await db.read();
     await db.data.party.push(partydata);
     await db.write();
     // db.data.user.push(userdata).last().write()
-    res.send(req.body);
+    res.send(partydata);
 });
 router.put('/party/update/:partyId', async (req, res) => {
     await db.read();

@@ -22,13 +22,13 @@ import { join, dirname } from 'path'
     await db.read();
     db.data ||= { user: [], party: [] } 
 
-    db.data?.user.push({
-        userId : 1,
-        firstName : '',
-        lastName : '',
-        email : '',
-        password : ''
-    })
+    // db.data?.user.push({
+    //     userId : 1,
+    //     firstName : '',
+    //     lastName : '',
+    //     email : '',
+    //     password : ''
+    // })
 
     await db.write();
 // }
