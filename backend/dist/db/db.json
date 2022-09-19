@@ -1,12 +1,6 @@
 {
   "user": [
     {
-      "firstName": "Chutipas",
-      "lastName": "Borsub",
-      "email": "Angel_flood@hotmail.com",
-      "password": "1234"
-    },
-    {
       "userId": 2,
       "firstName": "Chutipas",
       "lastName": "Borsub",
@@ -15,7 +9,7 @@
     },
     {
       "userId": 3,
-      "firstName": "Edit",
+      "firstName": "Chutipas",
       "lastName": "Borsub",
       "email": "Angel_flood@hotmail.com",
       "password": "1234"
@@ -54,6 +48,24 @@
       "lastName": "Borsub",
       "email": "Angel_flood@hotmail.com",
       "password": "1234"
+    }
+  ],
+  "party": [
+    {
+      "partyId": 2,
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
+      "registered": 0,
+      "maxguests": 5,
+      "image": "",
+      "creatorId": 2
+    },
+    {
+      "partyId": 3,
+      "creatorId": 2,
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
+      "registered": 0,
+      "maxguests": 100,
+      "image": ""
     }
   ]
 }

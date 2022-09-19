@@ -12,14 +12,15 @@ import { join, dirname } from 'path'
     const file = join(__dirname, 'db.json')
 
     type Data = {
-        user: any[]
+        user: any[],
+        party: any[]
       }
       
     const adapter = new JSONFile<Data>(file)
     const db = new Low(adapter)
 
     await db.read();
-    db.data ||= { user: [] } 
+    db.data ||= { user: [], party: [] } 
 
     db.data?.user.push({
         userId : 1,
