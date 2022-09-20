@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { AiOutlinePlus, AiOutlineLogout, AiOutlineUser } from "react-icons/ai";
 import { useRouter } from 'next/router'
 import styles from '../styles/Home.module.css'
-import { Button, Input, Checkbox, Form, Card, PageHeader, Row } from "antd";
+import { Button, Input, Checkbox, Form, Card, PageHeader, Row, Empty } from "antd";
 import myStyles from '../styles/MyComponent.module.css'
 import ItemBox from '../components/itembox'
 import dataDummy from '../components/dummydata'
@@ -14,6 +14,9 @@ import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import HeaderBar from '../components/header';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import axios from 'axios';
+import { useDispatch, connect } from "react-redux";
+
 
 const antIcon = (
   <LoadingOutlined
@@ -24,8 +27,8 @@ const antIcon = (
   />
 );
 
-const HomeApp: NextPage = () => {
-  let dataDummyInit = dataDummy;
+const HomeApp: NextPage = (props: any) => {
+  const dispatch = useDispatch();
   const [dataparty,Setdataparty]: any[] = useState([]);
   const [showspin,Setshowspin] = useState(true);
   const [hasmore,Sethasmore] = useState(true);
@@ -36,27 +39,46 @@ const HomeApp: NextPage = () => {
   }
 
   useEffect(() =>{
-    setTimeout(() => {
-      Setshowspin(false)
-      fetchData();
-    }, 1000)
+    fetchData();
+    // setTimeout(() => {
+    //   Setshowspin(false)
+    //   fetchData();
+    // }, 1000)
+    console.log(props.post);
   },[])
 
-  const updateData = (id: number) =>{
-    let datastore = dataparty;
+  const updateData = async (id: number) =>{
     console.log('Update data ' + id);
-    const newData = datastore.findIndex( (obj: { id: number; }) => obj.id == id);
+    await axios.put(`http://localhost:3100/api/user/update/${props.post.users.userId}`, {
+      party_joined : id
+    }).then(response => {
+      console.log(response.data);
+      const newData = dataparty.findIndex( (obj: { partyId: number; }) => obj.partyId == id);
+      dataparty[newData].registered = dataparty[newData].registered+1;
 
-    datastore[newData].registered = datastore[newData].registered+1
-    Setdataparty(datastore);
+      dispatch({
+        type: 'UPDATE_USER',
+        data: response.data[0].party_joined
+      });
+      
+      Setdataparty(dataparty);
+    });
   }
 
   const fetchData = async () =>{
-    Setdataparty(dataDummyInit);
 
-    setTimeout(() =>{
+    await axios.post('http://localhost:3100/api/party').then(response => {
+      console.log(response.data);
+      Setdataparty(response.data);
       Sethasmore(false);
-    }, 2000)
+      Setshowspin(false);
+    });
+
+    // Setdataparty(dataDummyInit);
+
+    // setTimeout(() =>{
+    //   Sethasmore(false);
+    // }, 2000)
     
   }
 
@@ -72,8 +94,10 @@ const HomeApp: NextPage = () => {
       />
       <div className={styles.container}>
         <main className={styles.main}>
-
-
+        {showspin ? <Spin indicator={antIcon} size='large'/> : dataparty.length == 0 && !showspin ?
+        <Empty description='ไม่พบราการปาร์ตี้' />
+        : 
+        <>
         <InfiniteScroll
           dataLength={dataparty.length} //This is important field to render the next data
           next={fetchData}
@@ -97,8 +121,8 @@ const HomeApp: NextPage = () => {
           style={{ overflow: 'hidden' }}
         >
           <Row gutter={[16, 16]}>
-            {dataparty.map((element: { id: any; }) => (
-              <ItemBox mode={'join'} data={element} key={element.id} updateData={updateData}/>
+            {dataparty.map((element: { partyId: any; }) => (
+              <ItemBox mode={'join'} data={element} key={element.partyId} updateData={updateData}/>
             ))}
           </Row>
         </InfiniteScroll>
@@ -115,10 +139,14 @@ const HomeApp: NextPage = () => {
             </Row>
           } */}
           {/* </div> */}
+          </>
+        }
         </main>
       </div>
     </>
   )
 }
 
-export default HomeApp
+const mapStateToProps = (state: any) => ({ post: state })
+
+export default connect(mapStateToProps)(HomeApp)

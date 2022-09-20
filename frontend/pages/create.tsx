@@ -8,20 +8,39 @@ import styles from '../styles/Home.module.css'
 import { Button, Input, Checkbox, Form, PageHeader } from "antd";
 import myStyles from '../styles/MyComponent.module.css'
 import HeaderBar from '../components/header';
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import axios from 'axios';
+import { connect } from "react-redux";
 
-const CreateParty: NextPage = () => {
+const CreateParty: NextPage = (props: any) => {
   const [loadings, setLoadings] = useState([]);
   const router = useRouter();
+  const descRef = useRef('');
+  const maxguestsRef = useRef('');
 
+  const onDescChange = (e: { target: { value: string } }) =>{
+    descRef.current = e.target.value
+  }
+
+  const onMaxguestChange = (e: { target: { value: string } }) =>{
+    maxguestsRef.current = e.target.value
+  }
 
   const clickCreate = async () =>{
     await enterLoading(0);
 
-    setTimeout(() =>{
-      router.back();
-     }, 6000)
-
+    await axios.post('http://localhost:3100/api/party/add', {
+        description: descRef.current,
+        maxguests: maxguestsRef.current,
+        creatorId: props.post.users.userId
+    }).then(response => {
+      console.log(response.data);
+      setTimeout(() =>{
+        router.back();
+       }, 6000)
+    }).catch(error => {
+      console.log(error.response.data.message)
+   });
   }
 
   const enterLoading = async (index: number) => {
@@ -68,7 +87,7 @@ const CreateParty: NextPage = () => {
               },
             ]}
           >
-            <Input className={myStyles.cspan} size='large' placeholder='ชื่อปาร์ตี้'></Input>
+            <Input className={myStyles.cspan} size='large' placeholder='ชื่อปาร์ตี้' onChange={onDescChange}></Input>
           </Form.Item>
         </div>
         <div>
@@ -81,7 +100,7 @@ const CreateParty: NextPage = () => {
               },
             ]}
           >
-            <Input className={myStyles.cspan} size='large' placeholder='จำนวนคนที่ขาด'></Input>
+            <Input className={myStyles.cspan} size='large' placeholder='จำนวนคนที่ขาด' onChange={onMaxguestChange}></Input>
           </Form.Item>
         </div>
       </div>
@@ -104,4 +123,6 @@ const CreateParty: NextPage = () => {
   )
 }
 
-export default CreateParty
+const mapStateToProps = (state: any) => ({ post: state })
+
+export default connect(mapStateToProps)(CreateParty)

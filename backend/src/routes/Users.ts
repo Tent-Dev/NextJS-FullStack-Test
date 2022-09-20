@@ -4,9 +4,12 @@ import { fileURLToPath } from 'url'
 import { join, dirname } from 'path'
 import dbs from '../db/db.js'
 import _ from 'lodash'
+import bcrypt from 'bcrypt'
 
 const db = dbs();
 const router = express.Router();
+
+const saltRounds = 10;
 
 // const __dirname = dirname(fileURLToPath(import.meta.url));
 // const file = join(__dirname, 'db.json')
@@ -25,6 +28,37 @@ router.get('/user', async (req, res) =>{
    res.send(users);
 });
 
+router.post('/user/login', async (req, res) =>{
+   await db.read();
+
+   let userData = {};
+
+   await db.data.user.find((obj: {password: string, email: string }) =>{
+      if (obj.email.toLowerCase() === req.body.email.toLowerCase()){
+         userData = obj;
+      }
+   });
+
+   if(!_.isEmpty(userData)){
+      bcrypt.compare(req.body.password, userData.password, function(err, result) {
+         if(result){
+            res.send(userData);
+            return;
+         }else{
+            res.status(400).json({
+               message: 'Password is not correct'
+            });
+            return;
+         }
+     });
+   }else{
+      res.status(400).json({
+         message: 'User not found'
+      });
+      return;
+   }
+});
+
 router.get('/user/:userId', async (req, res) =>{
    await db.read();
    const users = db.data.user.find((obj: { userId: number }) =>{
@@ -40,36 +74,65 @@ router.post('/user/add', async (req, res) => {
 
    await db.read();
    let AUTO_INCREMENT = db.data.user[db.data.user.length-1];
+   let userdata = {};
 
-   const userdata = {
-      userId : AUTO_INCREMENT !== undefined ? AUTO_INCREMENT.userId+1 : 0,
-      firstName : req.body.firstName,
-      lastName : req.body.lastName,
-      email : req.body.email,
-      password : req.body.password
-   }
+   bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
+      userdata = {
+         userId : AUTO_INCREMENT !== undefined ? AUTO_INCREMENT.userId+1 : 0,
+         firstName : req.body.firstName,
+         lastName : req.body.lastName,
+         email : req.body.email,
+         password : hash,
+         party_joined: []
+      }
 
-
-await db.data.user.push(userdata);
-await db.write();
+      await db.data.user.push(userdata);
+      await db.write();
+      res.send(userdata);
+   });
 // db.data.user.push(userdata).last().write()
-res.send(userdata);
 });
 
 router.put('/user/update/:userId', async (req, res) =>{
    await db.read();
-
+   let userId_num = Number(req.params.userId);
    const users = db.data.user.filter((obj: { userId: number }) =>{
-      let userId_num = Number(req.params.userId);
       if (obj.userId === userId_num){
          return obj;
       }
    });
 
+   if(_.isArray(users[0].party_joined)){
+      users[0].party_joined.push(req.body.party_joined);
+   }else{
+      users[0].party_joined = []
+      users[0].party_joined.push(req.body.party_joined);
+   }
+
+   // return res.send(users[0].party_joined);
+
    users[0].firstName = req.body.firstName || users[0].firstName;
    users[0].lastName = req.body.lastName || users[0].lastName;
    users[0].email = req.body.email || users[0].email;
    users[0].password = req.body.password || users[0].password;
+   // users[0].party_joined = users[0].party_joined.push(req.body.party_joined) || users[0].party_joined || [];
+   
+   if(_.has(req.body, 'party_joined')){
+      const partys = db.data.party.filter((obj: { partyId: number }) =>{
+         if (obj.partyId === req.body.party_joined){
+            return obj;
+         }
+      });
+
+      if(_.isArray(partys[0].guest)){
+         partys[0].guest.push(userId_num);
+      }else{
+         partys[0].guest = []
+         partys[0].guest.push(userId_num);
+      }
+
+      // partys[0].guest = partys[0].guest.push(req.params.userId) || partys[0].guest.push || [];
+   }
 
    await db.write();
    res.send(users);
@@ -103,15 +166,43 @@ router.delete('/user/delete/:userId', async (req, res) =>{
 
 // Party
 
-router.get('/party', async (req, res) =>{
+router.post('/party', async (req, res) =>{
    await db.read();
-   const partys = db.data.party;
+   
+   let partys = db.data.party;
+
+   if('creatorId' in req.body){
+
+      if(req.body.mode === 'own'){
+         partys = db.data.party.filter((obj: { creatorId: number }) =>{
+            if (obj.creatorId === req.body.creatorId){
+               return obj;
+            }
+         });
+      }else{
+
+         const users = db.data.user.find((obj: { userId: number }) =>{
+            if (obj.userId === req.body.creatorId){
+               return obj;
+            }
+         });
+
+         // return res.send(users.party_joined);
+
+         partys = db.data.party.filter((obj: { partyId: number }) =>{
+            if (_.includes(users.party_joined,obj.partyId)){
+               return obj;
+            }
+         });
+      }
+   }
+
    res.send(partys);
 });
 
 router.get('/party/:partyId', async (req, res) =>{
    await db.read();
-   const partys = db.data.party.find((obj: { partyId: number }) =>{
+   const partys = db.data.party.filter((obj: { partyId: number }) =>{
       let partyId_num = Number(req.params.partyId);
       if (obj.partyId === partyId_num){
          return obj;
@@ -132,7 +223,8 @@ router.post('/party/add', async (req, res) => {
       description : req.body.description || 'ไม่มีรายละเอียดปาร์ตี้',
       registered : 0,
       maxguests : req.body.maxguests || 0,
-      image : req.body.image || ''
+      image : req.body.image || '',
+      guest: []
    }
 
 await db.data.party.push(partydata);
@@ -179,7 +271,7 @@ router.delete('/party/delete/:partyId', async (req, res) =>{
    });
 
    await db.write();
-   res.send(db.data.party);
+   res.send('Deleted');
 });
 
 export default router;

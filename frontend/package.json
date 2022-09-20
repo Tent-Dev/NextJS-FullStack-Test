@@ -9,13 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.5",
     "antd": "^4.23.1",
+    "axios": "^0.27.2",
+    "lodash": "^4.17.21",
     "next": "12.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-lines-ellipsis": "^0.15.3",
+    "react-redux": "^8.0.2",
+    "redux": "^4.2.0",
     "sweetalert2": "^11.4.33"
   },
   "devDependencies": {

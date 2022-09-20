@@ -3,11 +3,12 @@ import { AiOutlineArrowLeft, AiOutlineLogout, AiOutlineUser, AiOutlineProfile } 
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import myStyles from '../styles/MyComponent.module.css'
+import { useDispatch, connect } from "react-redux";
 
 
 
 const HeaderBar = (props: any) => {
-
+    const dispatch = useDispatch();
     let headerText = props.headerText;
     let backBtn = props.backBtn;
     let childElement = props.childElement;
@@ -45,6 +46,11 @@ const HeaderBar = (props: any) => {
     );
 
     const clickLogout = () =>{
+
+      dispatch({
+        type: 'REMOVE'
+      });
+
       router.push('/')
     }
     
@@ -84,4 +90,6 @@ const HeaderBar = (props: any) => {
     )
 }
 
-export default HeaderBar
+const mapStateToProps = (state: any) => ({ post: state })
+
+export default  connect(mapStateToProps)(HeaderBar)

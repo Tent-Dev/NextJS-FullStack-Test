@@ -6,18 +6,47 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { Button, Input, Checkbox, Form } from "antd";
 import myStyles from '../styles/MyComponent.module.css'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import axios from 'axios';
+import { useDispatch, connect } from "react-redux";
 
 const Home: NextPage = () => {
   const [loadings, setLoadings] = useState([]);
+  const dispatch = useDispatch();
   const router = useRouter();
+  const emailRef = useRef('');
+  const passwordRef = useRef('');
+
+  const onEmailChange = (e: { target: { value: string } }) =>{
+    emailRef.current = e.target.value
+  }
+
+  const onPasswordChange = (e: { target: { value: string } }) =>{
+    passwordRef.current = e.target.value
+  }
+
 
   const clickLogin = async () =>{
     await enterLoading(0);
 
-    setTimeout(() =>{
-      router.push('/home')
-     }, 6000)
+    await axios.post('http://localhost:3100/api/user/login', {
+      email : emailRef.current,
+      password : passwordRef.current
+    }).then(response => {
+      console.log(response.data);
+
+      dispatch({
+        type: 'LOGIN_SUCCESS',
+        data: response.data
+      });
+      
+      setTimeout(() =>{
+        router.push('/home')
+       }, 6000)
+
+    }).catch(error => {
+      console.log(error.response.data.message)
+   });
   }
 
   const enterLoading = async (index: number) => {
@@ -71,7 +100,7 @@ const Home: NextPage = () => {
               },
             ]}
           >
-            <Input className={myStyles.cspan} size='large' placeholder='อีเมล'></Input>
+            <Input className={myStyles.cspan} size='large' placeholder='อีเมล' onChange={onEmailChange}></Input>
             </Form.Item>
           </div>
           <div>
@@ -84,7 +113,7 @@ const Home: NextPage = () => {
               },
             ]}
           >
-            <Input className={myStyles.cspan} size='large' type={'password'} placeholder='รหัสผ่าน'></Input>
+            <Input className={myStyles.cspan} size='large' type={'password'} placeholder='รหัสผ่าน' onChange={onPasswordChange}></Input>
           </Form.Item>
           </div>
         </div>
@@ -112,4 +141,6 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+const mapStateToProps = (state: any) => ({ post: state })
+
+export default connect(mapStateToProps)(Home)

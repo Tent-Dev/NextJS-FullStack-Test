@@ -8,6 +8,9 @@ import myStyles from '../styles/MyComponent.module.css'
 import LinesEllipsis from 'react-lines-ellipsis'
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
+import { connect } from "react-redux";
+import _ from 'lodash'
+
 
 const ItemBox = (props: any) => {
   let mode = props.mode;
@@ -25,6 +28,11 @@ const ItemBox = (props: any) => {
     let check = true ;
     if(mode == 'join'){
       check = props.data.registered >= props.data.maxguests ? true : false;
+      if(_.includes(props.post.users.party_joined,props.data.partyId)){
+        check = true;
+        setBtntext('Joined');
+      }
+      
     }
     else{
       check = false
@@ -76,19 +84,19 @@ const ItemBox = (props: any) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         await enterLoading(0);
-        setTimeout(() => {
+        setTimeout(async () => {
 
           if (mode == 'join') {
-            console.log('Join party ' + props.data.id)
+            console.log('Join party ' + props.data.partyId)
             setBtntext('Joined')
             setBtndisable(true)
-            props.updateData(props.data.id)
+            props.updateData(props.data.partyId)
           }
           else if (mode == 'own') {
-            console.log('Delete party ' + props.data.id)
+            await props.deleteData(props.data.partyId)
           }
           else if (mode == 'joined') {
-            console.log('Leave party ' + props.data.id)
+            console.log('Leave party ' + props.data.partyId)
           }
 
           Swal.fire(
@@ -144,4 +152,6 @@ const ItemBox = (props: any) => {
     )
 }
 
-export default ItemBox
+const mapStateToProps = (state: any) => ({ post: state })
+
+export default connect(mapStateToProps)(ItemBox)

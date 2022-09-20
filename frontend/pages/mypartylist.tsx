@@ -1,4 +1,4 @@
-import { Button, Row } from 'antd';
+import { Button, Empty, Row } from 'antd';
 import type { NextPage } from 'next'
 import HeaderBar from '../components/header';
 import myStyles from '../styles/MyComponent.module.css'
@@ -11,6 +11,8 @@ import { useEffect, useState } from 'react';
 import dataDummy from '../components/dummydata'
 import ItemBox from '../components/itembox';
 import { LoadingOutlined } from '@ant-design/icons';
+import { connect } from "react-redux";
+import axios from 'axios';
 
 const antIcon = (
     <LoadingOutlined
@@ -28,33 +30,6 @@ const MyPartyList: NextPage = (props: any) => {
     const [hasmore,Sethasmore] = useState(true);
     const [dataType, Setdatatype] = useState('own');
 
-    const mydummy = [
-        {
-            id: 0,
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
-            registered: 5,
-            maxguests: 5,
-            image: ''
-          },
-          {
-            id: 1,
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
-            registered: 1,
-            maxguests: 5,
-            image: ''
-          }
-    ];
-
-    const myOwndummy = [
-        {
-            id: 0,
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
-            registered: 4,
-            maxguests: 5,
-            image: ''
-          }
-    ];
-
     useEffect(() =>{
         setTimeout(() => {
             Setshowspin(false)
@@ -67,20 +42,59 @@ const MyPartyList: NextPage = (props: any) => {
     }
 
     const fetchData = async () =>{
-        Setdataparty(dataType == 'joined' ? mydummy : myOwndummy);
-    
+        
+        // Setdataparty(dataType == 'joined' ? mydummy : myOwndummy);
+
+        let data: any[] = [];
+
+        if(dataType == 'joined'){
+            await axios.post('http://localhost:3100/api/party', {
+                creatorId : props.post.users.userId,
+                mode : 'joined'
+            }).then(response => {
+            console.log(response.data);
+            data = response.data
+            Setdataparty(data);
+            });
+        }else{
+            await axios.post('http://localhost:3100/api/party', {
+                creatorId : props.post.users.userId,
+                mode : 'own'
+            }).then(response => {
+            console.log(response.data);
+            data = response.data
+            Setdataparty(data);
+            });
+        }
+
         setTimeout(() =>{
           Sethasmore(false);
         }, 2000)
     }
 
-    const updateData = (id: number) =>{
-    let datastore = dataparty;
-    console.log('Update data ' + id);
-    const newData = datastore.findIndex( (obj: { id: number; }) => obj.id == id);
+    const updateData = async (id: number) =>{
+    // let datastore = dataparty;
+    console.log('Update data ' + id + '--->' + props.post.users.userId);
 
-    datastore[newData].registered = datastore[newData].registered+1
-    Setdataparty(datastore);
+    await axios.put(`http://localhost:3100/api/user/update/${props.post.users.userId}`, {
+        party_joined : id
+    }).then(response => {
+        console.log(response.data);
+        const newData = dataparty.findIndex( (obj: { id: number; }) => obj.id == id);
+        dataparty[newData].registered = dataparty[newData].registered+1
+        Setdataparty(dataparty);
+    });
+  }
+
+  const deleteData = async (id : number) =>{
+
+    await axios.delete(`http://localhost:3100/api/party/delete/${id}`).then(response => {
+        let newList = dataparty.filter((obj: { partyId: number; }) => obj.partyId !== id);
+
+        Setdataparty(newList);
+        console.log(response.data);
+    });
+
   }
 
   const renderOwnPartyComponent = () =>{
@@ -89,7 +103,10 @@ const MyPartyList: NextPage = (props: any) => {
             <main className={styles.main}>
                 {showspin ?
                     <Spin indicator={antIcon} size='large'/>
-                :
+                : dataparty.length == 0 && !showspin ?
+                
+                <Empty description='ไม่พบราการปาร์ตี้' /> : 
+                <>
                 <InfiniteScroll
                 dataLength={dataparty.length} //This is important field to render the next data
                 next={fetchData}
@@ -113,12 +130,13 @@ const MyPartyList: NextPage = (props: any) => {
                 style={{ overflow: 'hidden' }}
                 >
                     <Row gutter={[16, 16]}>
-                        {dataparty.map((element: { id: any; }) => (
-                        <ItemBox mode={dataType} data={element} key={element.id} updateData={updateData}/>
+                        {dataparty.map((element: { partyId: any; }) => (
+                        <ItemBox mode={dataType} data={element} key={element.partyId} updateData={updateData} deleteData={deleteData}/>
                         ))}
                     </Row>
             </InfiniteScroll>
-                }
+            </>
+            }
             </main>
         </div>
     )
@@ -162,4 +180,7 @@ const MyPartyList: NextPage = (props: any) => {
 
 }
 
-export default MyPartyList;
+const mapStateToProps = (state: any) => ({ post: state })
+
+
+export default connect(mapStateToProps)(MyPartyList);

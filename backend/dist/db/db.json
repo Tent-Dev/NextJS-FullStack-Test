@@ -2,27 +2,112 @@
   "user": [
     {
       "userId": 0,
-      "firstName": "Chutipas",
-      "lastName": "Borsub",
+      "firstName": "Firstname",
+      "lastName": "Lastname",
       "email": "Angel_flood@hotmail.com",
-      "password": "1234"
+      "password": "$2b$10$w9so3HxYScXKos92u41P9Oirb53ZT8TWq.GPCa/45ORloQ45viKTm"
     },
     {
       "userId": 1,
       "firstName": "Test",
-      "lastName": "Borsub",
-      "email": "Angel_flood@hotmail.com",
-      "password": "1234"
+      "lastName": "Test",
+      "email": "test",
+      "password": "$2b$10$peLnnIWQbJXQ6fUIzeo3HutqiMCyX99sKB6/o5av.ZjVtUf/dNIr6"
+    },
+    {
+      "userId": 2,
+      "firstName": "Chutipas",
+      "lastName": "Test2",
+      "email": "Test22",
+      "party_joined": [],
+      "password": "$2b$10$uwdQGMAYOwYXHFhtzXLohuIj0I701jWzfsoYd0VRv6OhW2X6yGmxu"
+    },
+    {
+      "userId": 3,
+      "firstName": "Chutipas",
+      "lastName": "Test2",
+      "email": "Test2",
+      "password": "$2b$10$vQozY2luJXUa1Rp3j2N8euzz0y7HHrLjohk9joMlw2fkLFrAVrXf2",
+      "party_joined": [
+        2,
+        5,
+        1,
+        3,
+        2,
+        1,
+        7,
+        6
+      ]
     }
   ],
   "party": [
     {
-      "partyId": 0,
-      "creatorId": 1,
-      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
+      "partyId": 1,
+      "creatorId": 0,
+      "description": "First Party!",
       "registered": 0,
-      "maxguests": 20,
-      "image": ""
+      "maxguests": "100",
+      "image": "",
+      "guest": [
+        3,
+        3
+      ]
+    },
+    {
+      "partyId": 2,
+      "creatorId": 0,
+      "description": "หาคนเล่น ROV",
+      "registered": 0,
+      "maxguests": "4",
+      "image": "",
+      "guest": [
+        3,
+        3
+      ]
+    },
+    {
+      "partyId": 3,
+      "creatorId": 0,
+      "description": "สร้างใหม่",
+      "registered": 0,
+      "maxguests": "2",
+      "image": "",
+      "guest": [
+        3
+      ]
+    },
+    {
+      "partyId": 5,
+      "creatorId": 1,
+      "description": "test2",
+      "registered": 0,
+      "maxguests": "100",
+      "image": "",
+      "guest": [
+        3
+      ]
+    },
+    {
+      "partyId": 6,
+      "creatorId": 3,
+      "description": "สวัสดี",
+      "registered": 0,
+      "maxguests": "3",
+      "image": "",
+      "guest": [
+        3
+      ]
+    },
+    {
+      "partyId": 7,
+      "creatorId": 3,
+      "description": "test222",
+      "registered": 0,
+      "maxguests": "2",
+      "image": "",
+      "guest": [
+        3
+      ]
     }
   ]
 }
