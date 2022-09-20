@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import dataDummy from '../components/dummydata'
 import ItemBox from '../components/itembox';
 import { LoadingOutlined } from '@ant-design/icons';
-import { connect } from "react-redux";
+import { useDispatch, connect } from "react-redux";
 import axios from 'axios';
 
 const antIcon = (
@@ -24,7 +24,7 @@ const antIcon = (
   );
   
 const MyPartyList: NextPage = (props: any) => {
-
+    const dispatch = useDispatch();
     const [dataparty,Setdataparty]: any[] = useState([]);
     const [showspin,Setshowspin] = useState(true);
     const [hasmore,Sethasmore] = useState(true);
@@ -72,27 +72,28 @@ const MyPartyList: NextPage = (props: any) => {
         }, 2000)
     }
 
-    const updateData = async (id: number) =>{
-    // let datastore = dataparty;
-    console.log('Update data ' + id + '--->' + props.post.users.userId);
+    const leaveData = async (id : number) =>{
 
-    await axios.put(`http://localhost:3100/api/user/update/${props.post.users.userId}`, {
-        party_joined : id
-    }).then(response => {
-        console.log(response.data);
-        const newData = dataparty.findIndex( (obj: { id: number; }) => obj.id == id);
-        dataparty[newData].registered = dataparty[newData].registered+1
-        Setdataparty(dataparty);
-    });
-  }
+        await axios.put(`http://localhost:3100/api/user/update/${props.post.users.userId}`,{
+            party_leave: id
+        }).then(response => {
+            dispatch({
+                type: 'UPDATE_USER',
+                data: response.data[0].party_joined
+              });
+
+            let newList = dataparty.filter((obj: {partyId: number; }) => (obj.partyId !== id));
+            Setdataparty(newList);
+        });
+
+    }
 
   const deleteData = async (id : number) =>{
 
     await axios.delete(`http://localhost:3100/api/party/delete/${id}`).then(response => {
-        let newList = dataparty.filter((obj: { partyId: number; }) => obj.partyId !== id);
-
+        let newList = dataparty.filter((obj: {partyId: number; }) => (obj.partyId !== id));
         Setdataparty(newList);
-        console.log(response.data);
+        console.log(newList);
     });
 
   }
@@ -105,7 +106,7 @@ const MyPartyList: NextPage = (props: any) => {
                     <Spin indicator={antIcon} size='large'/>
                 : dataparty.length == 0 && !showspin ?
                 
-                <Empty description='ไม่พบราการปาร์ตี้' /> : 
+                <Empty description='ไม่พบรายการปาร์ตี้' /> : 
                 <>
                 <InfiniteScroll
                 dataLength={dataparty.length} //This is important field to render the next data
@@ -131,7 +132,7 @@ const MyPartyList: NextPage = (props: any) => {
                 >
                     <Row gutter={[16, 16]}>
                         {dataparty.map((element: { partyId: any; }) => (
-                        <ItemBox mode={dataType} data={element} key={element.partyId} updateData={updateData} deleteData={deleteData}/>
+                        <ItemBox mode={dataType} data={element} key={element.partyId} leaveData={leaveData} deleteData={deleteData}/>
                         ))}
                     </Row>
             </InfiniteScroll>
@@ -160,7 +161,7 @@ const MyPartyList: NextPage = (props: any) => {
                 size={'large'}
                 centered={true}
                 tabBarStyle={{color: '#52118f'}}
-                onTabClick={(key) => {Setdatatype(key), Setshowspin(true), console.log(key)}}
+                onTabClick={(key) => {Setdatatype(key), console.log(key)}}
                 items={[
                     {
                         label: `ปาร์ตี้ที่ฉันสร้าง`,

@@ -5,7 +5,11 @@
       "firstName": "Firstname",
       "lastName": "Lastname",
       "email": "Angel_flood@hotmail.com",
-      "password": "$2b$10$w9so3HxYScXKos92u41P9Oirb53ZT8TWq.GPCa/45ORloQ45viKTm"
+      "password": "$2b$10$w9so3HxYScXKos92u41P9Oirb53ZT8TWq.GPCa/45ORloQ45viKTm",
+      "party_joined": [
+        3,
+        4
+      ]
     },
     {
       "userId": 1,
@@ -25,89 +29,109 @@
     {
       "userId": 3,
       "firstName": "Chutipas",
-      "lastName": "Test2",
+      "lastName": "Borsub",
       "email": "Test2",
       "password": "$2b$10$vQozY2luJXUa1Rp3j2N8euzz0y7HHrLjohk9joMlw2fkLFrAVrXf2",
+      "party_joined": []
+    },
+    {
+      "userId": 4,
+      "firstName": "Firstname",
+      "lastName": "Lastname",
+      "email": "admin@admin.com",
+      "password": "$2b$10$fVDrlzt4udiik9ILCDw8a.EqCCXGiGjwq3s3PXdE3MWix3Xag2.Qa",
       "party_joined": [
-        2,
-        5,
-        1,
-        3,
-        2,
-        1,
-        7,
-        6
+        2
       ]
     }
   ],
   "party": [
     {
-      "partyId": 1,
-      "creatorId": 0,
-      "description": "First Party!",
-      "registered": 0,
-      "maxguests": "100",
-      "image": "",
-      "guest": [
-        3,
-        3
-      ]
-    },
-    {
-      "partyId": 2,
-      "creatorId": 0,
+      "partyId": 0,
+      "creatorId": 4,
       "description": "หาคนเล่น ROV",
-      "registered": 0,
+      "registered": 1,
       "maxguests": "4",
       "image": "",
       "guest": [
-        3,
-        3
-      ]
+        4
+      ],
+      "status": "Deactive"
     },
     {
-      "partyId": 3,
-      "creatorId": 0,
-      "description": "สร้างใหม่",
-      "registered": 0,
-      "maxguests": "2",
-      "image": "",
-      "guest": [
-        3
-      ]
-    },
-    {
-      "partyId": 5,
-      "creatorId": 1,
-      "description": "test2",
+      "partyId": 1,
+      "creatorId": 4,
+      "description": "ไปกินเลี้ยง",
       "registered": 0,
       "maxguests": "100",
       "image": "",
-      "guest": [
-        3
-      ]
+      "guest": [],
+      "status": "Deactive"
     },
     {
-      "partyId": 6,
-      "creatorId": 3,
-      "description": "สวัสดี",
+      "partyId": 2,
+      "creatorId": 4,
+      "description": "เล่น Crypto",
       "registered": 0,
-      "maxguests": "3",
+      "maxguests": "4",
+      "image": "",
+      "guest": [],
+      "status": "Deactive"
+    },
+    {
+      "partyId": 3,
+      "description": "test",
+      "registered": 2,
+      "maxguests": "10",
       "image": "",
       "guest": [
-        3
-      ]
+        4,
+        0
+      ],
+      "status": "Active"
     },
     {
-      "partyId": 7,
-      "creatorId": 3,
-      "description": "test222",
-      "registered": 0,
+      "partyId": 4,
+      "description": "test2",
+      "registered": 1,
+      "maxguests": "12",
+      "image": "",
+      "guest": [
+        0
+      ],
+      "status": "Active"
+    },
+    {
+      "partyId": 5,
+      "creatorId": 4,
+      "description": "test",
+      "registered": 1,
       "maxguests": "2",
       "image": "",
       "guest": [
-        3
-      ]
+        4
+      ],
+      "status": "Active"
+    },
+    {
+      "partyId": 6,
+      "creatorId": 4,
+      "description": "tset",
+      "registered": 0,
+      "maxguests": "2",
+      "image": "",
+      "guest": [],
+      "status": "Active"
+    },
+    {
+      "partyId": 7,
+      "creatorId": 0,
+      "description": "test",
+      "registered": 0,
+      "maxguests": "123",
+      "image": "",
+      "guest": [],
+      "status": "Deactive"
     }
   ]
 }

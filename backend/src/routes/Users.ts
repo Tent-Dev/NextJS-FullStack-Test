@@ -5,6 +5,7 @@ import { join, dirname } from 'path'
 import dbs from '../db/db.js'
 import _ from 'lodash'
 import bcrypt from 'bcrypt'
+import e from 'express'
 
 const db = dbs();
 const router = express.Router();
@@ -90,7 +91,6 @@ router.post('/user/add', async (req, res) => {
       await db.write();
       res.send(userdata);
    });
-// db.data.user.push(userdata).last().write()
 });
 
 router.put('/user/update/:userId', async (req, res) =>{
@@ -102,13 +102,6 @@ router.put('/user/update/:userId', async (req, res) =>{
       }
    });
 
-   if(_.isArray(users[0].party_joined)){
-      users[0].party_joined.push(req.body.party_joined);
-   }else{
-      users[0].party_joined = []
-      users[0].party_joined.push(req.body.party_joined);
-   }
-
    // return res.send(users[0].party_joined);
 
    users[0].firstName = req.body.firstName || users[0].firstName;
@@ -118,6 +111,14 @@ router.put('/user/update/:userId', async (req, res) =>{
    // users[0].party_joined = users[0].party_joined.push(req.body.party_joined) || users[0].party_joined || [];
    
    if(_.has(req.body, 'party_joined')){
+
+      if(_.isArray(users[0].party_joined)){
+         users[0].party_joined.push(req.body.party_joined);
+      }else{
+         users[0].party_joined = []
+         users[0].party_joined.push(req.body.party_joined);
+      }
+
       const partys = db.data.party.filter((obj: { partyId: number }) =>{
          if (obj.partyId === req.body.party_joined){
             return obj;
@@ -131,7 +132,22 @@ router.put('/user/update/:userId', async (req, res) =>{
          partys[0].guest.push(userId_num);
       }
 
+      partys[0].registered = partys[0].guest.length
+
       // partys[0].guest = partys[0].guest.push(req.params.userId) || partys[0].guest.push || [];
+   }
+   else if(_.has(req.body, 'party_leave')){
+      users[0].party_joined = _.pull(users[0].party_joined, req.body.party_leave);
+
+      const partys = db.data.party.filter((obj: { partyId: number }) =>{
+         if (obj.partyId === req.body.party_leave){
+            return obj;
+         }
+      });
+
+      partys[0].guest = _.pull(partys[0].guest, userId_num);
+      partys[0].registered = partys[0].guest.length;
+
    }
 
    await db.write();
@@ -169,18 +185,22 @@ router.delete('/user/delete/:userId', async (req, res) =>{
 router.post('/party', async (req, res) =>{
    await db.read();
    
-   let partys = db.data.party;
+   let partys = db.data.party.filter((obj: { status: string}) =>{
+      if (obj.status == 'Active'){
+         return obj;
+      }
+   });
 
    if('creatorId' in req.body){
 
       if(req.body.mode === 'own'){
-         partys = db.data.party.filter((obj: { creatorId: number }) =>{
-            if (obj.creatorId === req.body.creatorId){
+         partys = db.data.party.filter((obj: { status: string, creatorId: number}) =>{
+            if (obj.creatorId === req.body.creatorId && obj.status == 'Active'){
                return obj;
             }
          });
       }else{
-
+         //mode joined
          const users = db.data.user.find((obj: { userId: number }) =>{
             if (obj.userId === req.body.creatorId){
                return obj;
@@ -189,8 +209,8 @@ router.post('/party', async (req, res) =>{
 
          // return res.send(users.party_joined);
 
-         partys = db.data.party.filter((obj: { partyId: number }) =>{
-            if (_.includes(users.party_joined,obj.partyId)){
+         partys = db.data.party.filter((obj: { partyId: number, status: string }) =>{
+            if (_.includes(users.party_joined,obj.partyId ) && obj.status == 'Active'){
                return obj;
             }
          });
@@ -224,7 +244,8 @@ router.post('/party/add', async (req, res) => {
       registered : 0,
       maxguests : req.body.maxguests || 0,
       image : req.body.image || '',
-      guest: []
+      guest: [],
+      status: 'Active'
    }
 
 await db.data.party.push(partydata);
@@ -265,10 +286,17 @@ router.delete('/party/delete/:partyId', async (req, res) =>{
    await db.read();
 
    let partyId_num = Number(req.params.partyId);
-
-   db.data.party = _.reject(db.data.party, function(el) {
-      return el.partyId === partyId_num;
+   const partys = db.data.party.filter((obj: { partyId: number }) =>{
+      if (obj.partyId === partyId_num){
+         return obj;
+      }
    });
+
+   partys[0].status = 'Deactive';
+
+   // db.data.party = _.reject(db.data.party, function(el) {
+   //    return el.partyId === partyId_num;
+   // });
 
    await db.write();
    res.send('Deleted');

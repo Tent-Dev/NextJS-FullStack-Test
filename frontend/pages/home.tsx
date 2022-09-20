@@ -95,7 +95,7 @@ const HomeApp: NextPage = (props: any) => {
       <div className={styles.container}>
         <main className={styles.main}>
         {showspin ? <Spin indicator={antIcon} size='large'/> : dataparty.length == 0 && !showspin ?
-        <Empty description='ไม่พบราการปาร์ตี้' />
+        <Empty description='ไม่พบรายการปาร์ตี้' />
         : 
         <>
         <InfiniteScroll

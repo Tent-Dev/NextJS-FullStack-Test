@@ -96,6 +96,7 @@ const ItemBox = (props: any) => {
             await props.deleteData(props.data.partyId)
           }
           else if (mode == 'joined') {
+            props.leaveData(props.data.partyId)
             console.log('Leave party ' + props.data.partyId)
           }
 
