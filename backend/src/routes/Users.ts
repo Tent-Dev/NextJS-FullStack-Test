@@ -86,6 +86,7 @@ router.post('/user/login', async (req, res) =>{
             res.send({user: outputData, Token : jwt.encode(payload, SECRET)});
          }else{
             res.status(400).json({
+               code: 1002,
                message: 'Password is not correct'
             });
             return;
@@ -93,6 +94,7 @@ router.post('/user/login', async (req, res) =>{
      });
    }else{
       res.status(400).json({
+         code: 1003,
          message: 'User not found'
       });
       return;

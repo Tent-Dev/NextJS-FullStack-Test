@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { Button, Input, Checkbox, Form } from "antd";
+import { Button, Input, Checkbox, Form, message } from "antd";
 import myStyles from '../styles/MyComponent.module.css'
 import { useRef, useState } from 'react'
 import axios from 'axios';
@@ -42,8 +42,13 @@ const Home: NextPage = () => {
         data: response.data
       }); 
       router.push('/home')
-    }).catch(error => {
-      console.log(error)
+    }).catch(err => {
+      if(err.response.data.code == 1002){
+        message.error('รหัสผ่านไม่ถูกต้อง');
+      }else if(err.response.data.code == 1003){
+        message.error('ไม่พบบัญชีผู้ใช้');
+      }
+      console.log(err)
    });
   }
 
@@ -61,7 +66,7 @@ const Home: NextPage = () => {
         newLoadings[index] = false;
         return newLoadings;
       });
-    }, 6000);
+    }, 3000);
 
   };
 
