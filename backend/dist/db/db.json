@@ -56,6 +56,14 @@
       "party_joined": [
         10
       ]
+    },
+    {
+      "userId": 6,
+      "firstName": "Firstname",
+      "lastName": "Lastname",
+      "email": "asdasd",
+      "password": "$2b$10$2mVkX73ITS0yDkZFy2rq6uukiDFeyeDijkut5JxJ/3Uje.n.pxuT6",
+      "party_joined": []
     }
   ],
   "party": [
@@ -187,7 +195,7 @@
       "maxguests": "1",
       "image": "",
       "guest": [],
-      "status": "Active"
+      "status": "Deactive"
     }
   ]
 }

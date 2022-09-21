@@ -83,7 +83,12 @@ const Register: NextPage = () => {
           <div>
             <Form.Item
               name="email"
+              hasFeedback
               rules={[
+                {
+                  type: 'email',
+                  message: 'รูปแบบอีเมลไม่ถูกต้อง',
+                },
                 {
                   required: true,
                   message: 'โปรดกรอกอีเมล',
@@ -96,6 +101,7 @@ const Register: NextPage = () => {
           <div>
             <Form.Item
               name="password"
+              hasFeedback
               rules={[
                 {
                   required: true,
@@ -109,11 +115,22 @@ const Register: NextPage = () => {
           <div>
           <Form.Item
             name="confirmpassword"
+            dependencies={['password']}
+            hasFeedback
             rules={[
               {
                 required: true,
                 message: 'โปรดกรอกรหัสผ่านอีกครั้ง',
               },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+    
+                  return Promise.reject(new Error('รหัสผ่านไม่ตรงกัน'));
+                },
+              }),
             ]}
           >
             <Input className={myStyles.cspan} size='large' type={'password'} placeholder='ยืนยันรหัสผ่าน'></Input>

@@ -115,7 +115,7 @@ const Home: NextPage = () => {
               },
             ]}
           >
-            <Input className={myStyles.cspan} size='large' type={'password'} placeholder='รหัสผ่าน' onChange={onPasswordChange}></Input>
+            <Input.Password className={myStyles.cspan} size='large' type={'password'} placeholder='รหัสผ่าน' onChange={onPasswordChange}></Input.Password>
           </Form.Item>
           </div>
         </div>
