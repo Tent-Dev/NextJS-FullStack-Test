@@ -2,16 +2,40 @@ import express from 'express';
 import dbs from '../db/db.js';
 import _ from 'lodash';
 import bcrypt from 'bcrypt';
+import jwt from "jwt-simple";
+import { ExtractJwt, Strategy } from 'passport-jwt';
+import passport from "passport";
 const db = dbs();
 const router = express.Router();
 const saltRounds = 10;
-// const __dirname = dirname(fileURLToPath(import.meta.url));
-// const file = join(__dirname, 'db.json')
-// const adapter = new JSONFile(file)
-// const db = new Low(adapter)
-// const { user, party } = db.data;
+const SECRET = "MY_SECRET_KEY"; //ในการใช้งานจริง คีย์นี้ให้เก็บเป็นความลับ
+////////////////////JWT Middleware Zone////////////////////
+const jwtOptions = {
+    jwtFromRequest: ExtractJwt.fromHeader("authorization"),
+    secretOrKey: SECRET
+};
+const jwtAuth = new Strategy(jwtOptions, async (payload, done) => {
+    console.log(payload);
+    await db.read();
+    const userData = await db.data.user.find((obj) => {
+        if (obj.email === payload.email) {
+            return obj;
+        }
+    });
+    if (userData) {
+        console.log('jwtAuth: SUCCESS');
+        done(null, true);
+    }
+    else {
+        done(null, false);
+        console.log('jwtAuth: FAIL');
+    }
+});
+passport.use(jwtAuth);
+const requireJWTAuth = passport.authenticate("jwt", { session: false });
+////////////////////End of JWT Middleware Zone/////////////////////////////
 router.get('/', (req, res) => res.send('Hello !'));
-router.get('/user', async (req, res) => {
+router.get('/user', requireJWTAuth, async (req, res) => {
     await db.read();
     const users = db.data.user;
     res.send(users);
@@ -27,8 +51,18 @@ router.post('/user/login', async (req, res) => {
     if (!_.isEmpty(userData)) {
         bcrypt.compare(req.body.password, userData.password, function (err, result) {
             if (result) {
-                res.send(userData);
-                return;
+                const payload = {
+                    email: req.body.email,
+                    created_timestamp: new Date().getTime()
+                };
+                let outputData = {
+                    userId: userData.userId,
+                    email: userData.email,
+                    firstName: userData.firstName,
+                    lastName: userData.lastName,
+                    party_joined: userData.party_joined
+                };
+                res.send({ user: outputData, Token: jwt.encode(payload, SECRET) });
             }
             else {
                 res.status(400).json({
@@ -45,7 +79,7 @@ router.post('/user/login', async (req, res) => {
         return;
     }
 });
-router.get('/user/:userId', async (req, res) => {
+router.get('/user/:userId', requireJWTAuth, async (req, res) => {
     await db.read();
     const users = db.data.user.find((obj) => {
         let userId_num = Number(req.params.userId);
@@ -73,7 +107,7 @@ router.post('/user/add', async (req, res) => {
         res.send(userdata);
     });
 });
-router.put('/user/update/:userId', async (req, res) => {
+router.put('/user/update/:userId', requireJWTAuth, async (req, res) => {
     await db.read();
     let userId_num = Number(req.params.userId);
     const users = db.data.user.filter((obj) => {
@@ -123,7 +157,7 @@ router.put('/user/update/:userId', async (req, res) => {
     await db.write();
     res.send(users);
 });
-router.delete('/user/delete/:userId', async (req, res) => {
+router.delete('/user/delete/:userId', requireJWTAuth, async (req, res) => {
     await db.read();
     let userId_num = Number(req.params.userId);
     // const users = db.data.user.filter((obj: { userId: number }) =>{
@@ -141,7 +175,7 @@ router.delete('/user/delete/:userId', async (req, res) => {
     res.send(db.data.user);
 });
 // Party
-router.post('/party', async (req, res) => {
+router.post('/party', requireJWTAuth, async (req, res) => {
     await db.read();
     let partys = db.data.party.filter((obj) => {
         if (obj.status == 'Active') {
@@ -173,7 +207,7 @@ router.post('/party', async (req, res) => {
     }
     res.send(partys);
 });
-router.get('/party/:partyId', async (req, res) => {
+router.get('/party/:partyId', requireJWTAuth, async (req, res) => {
     await db.read();
     const partys = db.data.party.filter((obj) => {
         let partyId_num = Number(req.params.partyId);
@@ -183,7 +217,7 @@ router.get('/party/:partyId', async (req, res) => {
     });
     res.send(partys);
 });
-router.post('/party/add', async (req, res) => {
+router.post('/party/add', requireJWTAuth, async (req, res) => {
     await db.read();
     let AUTO_INCREMENT = db.data.party[db.data.party.length - 1];
     const partydata = {
@@ -201,7 +235,7 @@ router.post('/party/add', async (req, res) => {
     // db.data.user.push(userdata).last().write()
     res.send(partydata);
 });
-router.put('/party/update/:partyId', async (req, res) => {
+router.put('/party/update/:partyId', requireJWTAuth, async (req, res) => {
     await db.read();
     const partys = db.data.party.filter((obj) => {
         let partyId_num = Number(req.params.partyId);
@@ -222,7 +256,7 @@ router.put('/party/update/:partyId', async (req, res) => {
     await db.write();
     res.send(partys);
 });
-router.delete('/party/delete/:partyId', async (req, res) => {
+router.delete('/party/delete/:partyId', requireJWTAuth, async (req, res) => {
     await db.read();
     let partyId_num = Number(req.params.partyId);
     const partys = db.data.party.filter((obj) => {

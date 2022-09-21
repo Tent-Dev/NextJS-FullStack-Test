@@ -49,7 +49,7 @@ const MyPartyList: NextPage = (props: any) => {
 
         if(dataType == 'joined'){
             await axios.post('http://localhost:3100/api/party', {
-                creatorId : props.post.users.userId,
+                creatorId : props.post.users.user.userId,
                 mode : 'joined'
             }).then(response => {
             console.log(response.data);
@@ -58,7 +58,7 @@ const MyPartyList: NextPage = (props: any) => {
             });
         }else{
             await axios.post('http://localhost:3100/api/party', {
-                creatorId : props.post.users.userId,
+                creatorId : props.post.users.user.userId,
                 mode : 'own'
             }).then(response => {
             console.log(response.data);
@@ -74,7 +74,7 @@ const MyPartyList: NextPage = (props: any) => {
 
     const leaveData = async (id : number) =>{
 
-        await axios.put(`http://localhost:3100/api/user/update/${props.post.users.userId}`,{
+        await axios.put(`http://localhost:3100/api/user/update/${props.post.users.user.userId}`,{
             party_leave: id
         }).then(response => {
             dispatch({

@@ -32,7 +32,10 @@
       "lastName": "Borsub",
       "email": "Test2",
       "password": "$2b$10$vQozY2luJXUa1Rp3j2N8euzz0y7HHrLjohk9joMlw2fkLFrAVrXf2",
-      "party_joined": []
+      "party_joined": [
+        3,
+        6
+      ]
     },
     {
       "userId": 4,
@@ -42,6 +45,16 @@
       "password": "$2b$10$fVDrlzt4udiik9ILCDw8a.EqCCXGiGjwq3s3PXdE3MWix3Xag2.Qa",
       "party_joined": [
         2
+      ]
+    },
+    {
+      "userId": 5,
+      "firstName": "Firstname",
+      "lastName": "Lastname",
+      "email": "admin2",
+      "password": "$2b$10$1EcgiKVuAdTS0qGfM.VGUOa8qWGYCyM01XwodZGqElQDtZKlfQy5m",
+      "party_joined": [
+        10
       ]
     }
   ],
@@ -81,12 +94,13 @@
     {
       "partyId": 3,
       "description": "test",
-      "registered": 2,
+      "registered": 3,
       "maxguests": "10",
       "image": "",
       "guest": [
         4,
-        0
+        0,
+        3
       ],
       "status": "Active"
     },
@@ -117,10 +131,12 @@
       "partyId": 6,
       "creatorId": 4,
       "description": "tset",
-      "registered": 0,
+      "registered": 1,
       "maxguests": "2",
       "image": "",
-      "guest": [],
+      "guest": [
+        3
+      ],
       "status": "Active"
     },
     {
@@ -132,6 +148,46 @@
       "image": "",
       "guest": [],
       "status": "Deactive"
+    },
+    {
+      "partyId": 8,
+      "creatorId": 3,
+      "description": "tset",
+      "registered": 0,
+      "maxguests": "1234",
+      "image": "",
+      "guest": [],
+      "status": "Active"
+    },
+    {
+      "partyId": 9,
+      "description": "test",
+      "registered": 0,
+      "maxguests": "10",
+      "image": "",
+      "guest": [],
+      "status": "Active"
+    },
+    {
+      "partyId": 10,
+      "description": "auth",
+      "registered": 1,
+      "maxguests": "2",
+      "image": "",
+      "guest": [
+        5
+      ],
+      "status": "Active"
+    },
+    {
+      "partyId": 11,
+      "creatorId": 5,
+      "description": "test",
+      "registered": 0,
+      "maxguests": "1",
+      "image": "",
+      "guest": [],
+      "status": "Active"
     }
   ]
 }

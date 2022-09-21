@@ -18,17 +18,11 @@ const ItemBox = (props: any) => {
   const [btndisable,setBtndisable] = useState(true);
   const [loadings, setLoadings] = useState([]);
 
-  
-
-  const clickBtn = async () =>{
-    AlertMsg();
-  }
-
   const checkJoin = () =>{
     let check = true ;
     if(mode == 'join'){
       check = props.data.registered >= props.data.maxguests ? true : false;
-      if(_.includes(props.post.users.party_joined,props.data.partyId)){
+      if(_.includes(props.post.users.user.party_joined,props.data.partyId)){
         check = true;
         setBtntext('Joined');
       }
@@ -77,8 +71,8 @@ const ItemBox = (props: any) => {
       // text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#52118f',
+      cancelButtonColor: '#ff4d4f',
       confirmButtonText: 'ใช่',
       cancelButtonText: 'ยกเลิก'
     }).then(async (result) => {

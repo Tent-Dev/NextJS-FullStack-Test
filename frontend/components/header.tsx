@@ -51,6 +51,8 @@ const HeaderBar = (props: any) => {
         type: 'REMOVE'
       });
 
+      localStorage.removeItem('persist:root');
+
       router.push('/')
     }
     

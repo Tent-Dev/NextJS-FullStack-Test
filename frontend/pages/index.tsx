@@ -35,6 +35,8 @@ const Home: NextPage = () => {
     }).then(response => {
       console.log(response.data);
 
+      // response.data.isLoggedIn = true;
+
       dispatch({
         type: 'LOGIN_SUCCESS',
         data: response.data
@@ -45,7 +47,7 @@ const Home: NextPage = () => {
        }, 6000)
 
     }).catch(error => {
-      console.log(error.response.data.message)
+      console.log(error)
    });
   }
 

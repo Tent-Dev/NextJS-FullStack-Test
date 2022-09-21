@@ -16,6 +16,7 @@ import HeaderBar from '../components/header';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from 'axios';
 import { useDispatch, connect } from "react-redux";
+import _ from 'lodash';
 
 
 const antIcon = (
@@ -39,17 +40,18 @@ const HomeApp: NextPage = (props: any) => {
   }
 
   useEffect(() =>{
-    fetchData();
-    // setTimeout(() => {
-    //   Setshowspin(false)
-    //   fetchData();
-    // }, 1000)
-    console.log(props.post);
+
+    // if(!_.has(props.post.users, 'isLoggedIn')) {
+    //   console.log('FALSE')
+    //   router.push('/');
+    // }else{
+      fetchData();
+    // }
   },[])
 
   const updateData = async (id: number) =>{
     console.log('Update data ' + id);
-    await axios.put(`http://localhost:3100/api/user/update/${props.post.users.userId}`, {
+    await axios.put(`http://localhost:3100/api/user/update/${props.post.users.user.userId}`, {
       party_joined : id
     }).then(response => {
       console.log(response.data);
@@ -66,12 +68,17 @@ const HomeApp: NextPage = (props: any) => {
   }
 
   const fetchData = async () =>{
-
+    console.log(props.post.users.Token);
+    axios.defaults.headers.common['Authorization'] = props.post.users.Token;
     await axios.post('http://localhost:3100/api/party').then(response => {
       console.log(response.data);
       Setdataparty(response.data);
       Sethasmore(false);
       Setshowspin(false);
+    }).catch(err =>{
+      Sethasmore(false);
+      Setshowspin(false);
+      console.log('error')
     });
 
     // Setdataparty(dataDummyInit);

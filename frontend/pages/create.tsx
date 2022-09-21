@@ -32,7 +32,7 @@ const CreateParty: NextPage = (props: any) => {
     await axios.post('http://localhost:3100/api/party/add', {
         description: descRef.current,
         maxguests: maxguestsRef.current,
-        creatorId: props.post.users.userId
+        creatorId: props.post.users.user.userId
     }).then(response => {
       console.log(response.data);
       setTimeout(() =>{
