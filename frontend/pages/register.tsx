@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { Button, Input, Checkbox, Form } from "antd";
+import { Button, Input, Checkbox, Form, message } from "antd";
 import myStyles from '../styles/MyComponent.module.css'
 import { useState, useRef } from 'react'
 import axios from 'axios';
@@ -33,6 +33,10 @@ const Register: NextPage = () => {
       password : passwordRef.current
     }).then(response => {
         router.push('/')
+    }).catch((err) =>{
+      if(err.response.data.code == 1004){
+        message.error('อีเมลนี้มีอยู่ในระบบแล้ว');
+      }
     });
   }
 

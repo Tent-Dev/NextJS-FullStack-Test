@@ -99,19 +99,34 @@ router.post('/user/add', async (req, res) => {
     await db.read();
     let AUTO_INCREMENT = db.data.user[db.data.user.length - 1];
     let userdata = {};
-    bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
-        userdata = {
-            userId: AUTO_INCREMENT !== undefined ? AUTO_INCREMENT.userId + 1 : 0,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            email: req.body.email,
-            password: hash,
-            party_joined: []
-        };
-        await db.data.user.push(userdata);
-        await db.write();
-        res.send(userdata);
+    let hadRegister = false;
+    await db.data.user.find((obj) => {
+        if (obj.email.toLowerCase() === req.body.email.toLowerCase()) {
+            hadRegister = true;
+        }
     });
+    if (hadRegister) {
+        res.status(400).json({
+            code: 1004,
+            message: 'This account already has a user.'
+        });
+        return;
+    }
+    else {
+        bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
+            userdata = {
+                userId: AUTO_INCREMENT !== undefined ? AUTO_INCREMENT.userId + 1 : 0,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                email: req.body.email,
+                password: hash,
+                party_joined: []
+            };
+            await db.data.user.push(userdata);
+            await db.write();
+            res.send(userdata);
+        });
+    }
 });
 router.put('/user/update/:userId', requireJWTAuth, async (req, res) => {
     await db.read();

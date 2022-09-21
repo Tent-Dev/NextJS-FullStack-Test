@@ -25,6 +25,14 @@
       "email": "admin3@gmail.com",
       "password": "$2b$10$zEW34aOOc.9908JJxZlzGeangyOVUJWWw/0ch4pzaA/RfXoluzqYi",
       "party_joined": []
+    },
+    {
+      "userId": 3,
+      "firstName": "Firstname",
+      "lastName": "Lastname",
+      "email": "admin3@admin.com",
+      "password": "$2b$10$MIVqRbhf6uMZIVFKONzOseCQiCzO70Vj99r1Ac.2FFFpsJvjla0wK",
+      "party_joined": []
     }
   ],
   "party": [
@@ -79,6 +87,16 @@
       "image": "",
       "guest": [],
       "status": "Active"
+    },
+    {
+      "partyId": 5,
+      "creatorId": 1,
+      "description": "1",
+      "registered": 0,
+      "maxguests": "0",
+      "image": "",
+      "guest": [],
+      "status": "Deactive"
     }
   ]
 }
