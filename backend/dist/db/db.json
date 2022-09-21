@@ -54,7 +54,8 @@
       "email": "admin2",
       "password": "$2b$10$1EcgiKVuAdTS0qGfM.VGUOa8qWGYCyM01XwodZGqElQDtZKlfQy5m",
       "party_joined": [
-        10
+        10,
+        3
       ]
     },
     {
@@ -102,13 +103,14 @@
     {
       "partyId": 3,
       "description": "test",
-      "registered": 3,
+      "registered": 4,
       "maxguests": "10",
       "image": "",
       "guest": [
         4,
         0,
-        3
+        3,
+        5
       ],
       "status": "Active"
     },
@@ -196,6 +198,16 @@
       "image": "",
       "guest": [],
       "status": "Deactive"
+    },
+    {
+      "partyId": 12,
+      "creatorId": 5,
+      "description": "test2",
+      "registered": 0,
+      "maxguests": "123",
+      "image": "",
+      "guest": [],
+      "status": "Active"
     }
   ]
 }

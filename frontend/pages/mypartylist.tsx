@@ -8,11 +8,11 @@ import router from 'next/router';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Spin, Tabs } from 'antd';
 import { useEffect, useState } from 'react';
-import dataDummy from '../components/dummydata'
 import ItemBox from '../components/itembox';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useDispatch, connect } from "react-redux";
 import axios from 'axios';
+import _ from 'lodash';
 
 const antIcon = (
     <LoadingOutlined
@@ -31,45 +31,45 @@ const MyPartyList: NextPage = (props: any) => {
     const [dataType, Setdatatype] = useState('own');
 
     useEffect(() =>{
-        setTimeout(() => {
+    
+        if(_.has(props.post.users, 'user')){
             Setshowspin(false)
             fetchData();
-        }, 1000)
-        },[dataType])
+        }else{
+            router.push('/');
+        }
+        
+    },[dataType])
 
     const clickCreate = () =>{
         router.push('/create')
     }
 
     const fetchData = async () =>{
-        
-        // Setdataparty(dataType == 'joined' ? mydummy : myOwndummy);
 
         let data: any[] = [];
 
-        if(dataType == 'joined'){
+        if(_.has(props.post.users, 'user')){
+
             await axios.post('http://localhost:3100/api/party', {
                 creatorId : props.post.users.user.userId,
-                mode : 'joined'
+                mode : dataType
             }).then(response => {
-            console.log(response.data);
-            data = response.data
-            Setdataparty(data);
+                console.log(response.data);
+                data = response.data
+                Setdataparty(data);
+                Sethasmore(false);
+            }).catch(err =>{
+                console.log(err);
+                if(err.response.data.code == 1000){
+                    router.push(err.response.data.redirectTo);
+                }
             });
         }else{
-            await axios.post('http://localhost:3100/api/party', {
-                creatorId : props.post.users.user.userId,
-                mode : 'own'
-            }).then(response => {
-            console.log(response.data);
-            data = response.data
-            Setdataparty(data);
-            });
+            router.push('/');
         }
 
-        setTimeout(() =>{
-          Sethasmore(false);
-        }, 2000)
+        
     }
 
     const leaveData = async (id : number) =>{
@@ -107,7 +107,7 @@ const MyPartyList: NextPage = (props: any) => {
                 : dataparty.length == 0 && !showspin ?
                 
                 <Empty description='ไม่พบรายการปาร์ตี้' /> : 
-                <>
+                <div style={{'width' : '-webkit-fill-available'}}>
                 <InfiniteScroll
                 dataLength={dataparty.length} //This is important field to render the next data
                 next={fetchData}
@@ -128,7 +128,7 @@ const MyPartyList: NextPage = (props: any) => {
                 // releaseToRefreshContent={
                 //   <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
                 // }
-                style={{ overflow: 'hidden' }}
+                style={{ overflow: 'hidden', width: '-webkit-fill-available' }}
                 >
                     <Row gutter={[16, 16]}>
                         {dataparty.map((element: { partyId: any; }) => (
@@ -136,7 +136,7 @@ const MyPartyList: NextPage = (props: any) => {
                         ))}
                     </Row>
             </InfiniteScroll>
-            </>
+            </div>
             }
             </main>
         </div>

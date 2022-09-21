@@ -76,16 +76,12 @@ const HomeApp: NextPage = (props: any) => {
       Sethasmore(false);
       Setshowspin(false);
     }).catch(err =>{
-      Sethasmore(false);
-      Setshowspin(false);
-      console.log('error')
+      console.log(err);
+
+      if(err.response.data.code == 1000){
+        router.push(err.response.data.redirectTo);
+      }
     });
-
-    // Setdataparty(dataDummyInit);
-
-    // setTimeout(() =>{
-    //   Sethasmore(false);
-    // }, 2000)
     
   }
 
@@ -104,49 +100,36 @@ const HomeApp: NextPage = (props: any) => {
         {showspin ? <Spin indicator={antIcon} size='large'/> : dataparty.length == 0 && !showspin ?
         <Empty description='ไม่พบรายการปาร์ตี้' />
         : 
-        <>
-        <InfiniteScroll
-          dataLength={dataparty.length} //This is important field to render the next data
-          next={fetchData}
-          hasMore={hasmore}
-          loader={<div style={{'textAlign': 'center', 'marginTop': 24}}><Spin indicator={antIcon} size='large'/></div>}
-          endMessage={
-            <p style={{ textAlign: 'center', 'marginTop': 24, 'color': 'gray' }}>
-              <b>ผลลัพธ์การค้นหาสิ้นสุดแล้ว</b>
-            </p>
-          }
-          // below props only if you need pull down functionality
-          // refreshFunction={fetchData}
-          // pullDownToRefresh
-          // pullDownToRefreshThreshold={50}
-          // pullDownToRefreshContent={
-          //   <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
-          // }
-          // releaseToRefreshContent={
-          //   <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
-          // }
-          style={{ overflow: 'hidden' }}
-        >
-          <Row gutter={[16, 16]}>
-            {dataparty.map((element: { partyId: any; }) => (
-              <ItemBox mode={'join'} data={element} key={element.partyId} updateData={updateData}/>
-            ))}
-          </Row>
-        </InfiniteScroll>
-
-
-
-          {/* <div style={{ 'display': 'flex', 'flexWrap': 'wrap', 'gap': 10 }}> */}
-          {/* {showspin ? <Spin indicator={antIcon} size='large'/> : <></> }
-          {dataparty.length == 0 && !showspin ? <Empty description='ไม่พบราการปาร์ตี้' /> :
+        <div style={{'width' : '-webkit-fill-available'}}>
+          <InfiniteScroll
+            dataLength={dataparty.length} //This is important field to render the next data
+            next={fetchData}
+            hasMore={hasmore}
+            loader={<div style={{'textAlign': 'center', 'marginTop': 24}}><Spin indicator={antIcon} size='large'/></div>}
+            endMessage={
+              <p style={{ textAlign: 'center', 'marginTop': 24, 'color': 'gray' }}>
+                <b>ผลลัพธ์การค้นหาสิ้นสุดแล้ว</b>
+              </p>
+            }
+            // below props only if you need pull down functionality
+            // refreshFunction={fetchData}
+            // pullDownToRefresh
+            // pullDownToRefreshThreshold={50}
+            // pullDownToRefreshContent={
+            //   <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
+            // }
+            // releaseToRefreshContent={
+            //   <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
+            // }
+            style={{ overflow: 'hidden' }}
+          >
             <Row gutter={[16, 16]}>
-              {dataparty.map((element: { id: any; }) => (
-                <ItemBox data={element} key={element.id} updateData={updateData}/>
+              {dataparty.map((element: { partyId: any; }) => (
+                <ItemBox mode={'join'} data={element} key={element.partyId} updateData={updateData}/>
               ))}
             </Row>
-          } */}
-          {/* </div> */}
-          </>
+          </InfiniteScroll>
+          </div>
         }
         </main>
       </div>

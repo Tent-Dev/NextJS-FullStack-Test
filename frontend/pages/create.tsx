@@ -5,12 +5,13 @@ import { useRouter } from 'next/router'
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { Button, Input, Checkbox, Form, PageHeader } from "antd";
+import { Button, Input, Checkbox, Form, PageHeader, InputNumber } from "antd";
 import myStyles from '../styles/MyComponent.module.css'
 import HeaderBar from '../components/header';
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import axios from 'axios';
 import { connect } from "react-redux";
+import _ from 'lodash';
 
 const CreateParty: NextPage = (props: any) => {
   const [loadings, setLoadings] = useState([]);
@@ -26,6 +27,14 @@ const CreateParty: NextPage = (props: any) => {
     maxguestsRef.current = e.target.value
   }
 
+  useEffect(() =>{
+    
+    if(!_.has(props.post.users, 'user')){
+      router.push('/');
+    }
+    
+},[])
+
   const clickCreate = async () =>{
     await enterLoading(0);
 
@@ -34,10 +43,7 @@ const CreateParty: NextPage = (props: any) => {
         maxguests: maxguestsRef.current,
         creatorId: props.post.users.user.userId
     }).then(response => {
-      console.log(response.data);
-      setTimeout(() =>{
         router.back();
-       }, 6000)
     }).catch(error => {
       console.log(error.response.data.message)
    });
@@ -98,6 +104,10 @@ const CreateParty: NextPage = (props: any) => {
                 required: true,
                 message: 'โปรดกรอกจำนวนคนที่ขาด',
               },
+              {
+                pattern: /^\d+$/,
+                message: 'โปรดกรอกจำนวนเป็นตัวเลข',
+            }
             ]}
           >
             <Input className={myStyles.cspan} size='large' placeholder='จำนวนคนที่ขาด' onChange={onMaxguestChange}></Input>

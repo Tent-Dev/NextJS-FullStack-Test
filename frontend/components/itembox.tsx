@@ -78,7 +78,6 @@ const ItemBox = (props: any) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         await enterLoading(0);
-        setTimeout(async () => {
 
           if (mode == 'join') {
             console.log('Join party ' + props.data.partyId)
@@ -99,7 +98,6 @@ const ItemBox = (props: any) => {
           )
 
           // props.data.registered = props.data.registered+1;
-        }, 3000)
       }
     })
   }

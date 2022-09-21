@@ -40,12 +40,8 @@ const Home: NextPage = () => {
       dispatch({
         type: 'LOGIN_SUCCESS',
         data: response.data
-      });
-      
-      setTimeout(() =>{
-        router.push('/home')
-       }, 6000)
-
+      }); 
+      router.push('/home')
     }).catch(error => {
       console.log(error)
    });

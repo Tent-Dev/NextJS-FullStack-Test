@@ -1,7 +1,4 @@
 import express, { Application, Request, Response } from 'express'
-import { Low, LowSync, JSONFile, JSONFileSync } from 'lowdb'
-import { fileURLToPath } from 'url'
-import { join, dirname } from 'path'
 import dbs from '../db/db.js'
 import _ from 'lodash'
 import bcrypt from 'bcrypt'
@@ -9,11 +6,10 @@ import jwt from "jwt-simple"
 import {ExtractJwt,Strategy} from 'passport-jwt'
 import passport from "passport"
 
-
 const db: any = dbs();
 const router = express.Router();
 const saltRounds = 10;
-const SECRET = "MY_SECRET_KEY"; //ในการใช้งานจริง คีย์นี้ให้เก็บเป็นความลับ
+const SECRET = "MY_SECRET_KEY";
 
 ////////////////////JWT Middleware Zone////////////////////
 const jwtOptions = {
@@ -42,7 +38,7 @@ const jwtAuth = new Strategy(jwtOptions, async (payload, done) => {
 
 passport.use(jwtAuth);
 
-const requireJWTAuth = passport.authenticate("jwt",{session:false});
+const requireJWTAuth = passport.authenticate("jwt",{session:false, failureRedirect: 'http://localhost:3100/api/nonpermission'});
 
 ////////////////////End of JWT Middleware Zone/////////////////////////////
 router.get('/', (req, res) =>
@@ -53,6 +49,15 @@ router.get('/user', requireJWTAuth, async (req, res) =>{
    await db.read();
    const users = db.data.user;
    res.send(users);
+});
+
+router.get('/nonpermission', (req, res) =>{
+console.log('Redirect to login')
+res.status(400).send({
+   message: 'No permission',
+   code: 1000,
+   redirectTo: 'http://localhost:3000'
+});
 });
 
 router.post('/user/login', async (req, res) =>{
@@ -139,13 +144,10 @@ router.put('/user/update/:userId', requireJWTAuth, async (req, res) =>{
       }
    });
 
-   // return res.send(users[0].party_joined);
-
    users[0].firstName = req.body.firstName || users[0].firstName;
    users[0].lastName = req.body.lastName || users[0].lastName;
    users[0].email = req.body.email || users[0].email;
    users[0].password = req.body.password || users[0].password;
-   // users[0].party_joined = users[0].party_joined.push(req.body.party_joined) || users[0].party_joined || [];
    
    if(_.has(req.body, 'party_joined')){
 
@@ -171,7 +173,6 @@ router.put('/user/update/:userId', requireJWTAuth, async (req, res) =>{
 
       partys[0].registered = partys[0].guest.length
 
-      // partys[0].guest = partys[0].guest.push(req.params.userId) || partys[0].guest.push || [];
    }
    else if(_.has(req.body, 'party_leave')){
       users[0].party_joined = _.pull(users[0].party_joined, req.body.party_leave);
@@ -197,13 +198,6 @@ router.delete('/user/delete/:userId', requireJWTAuth, async (req, res) =>{
    await db.read();
 
    let userId_num = Number(req.params.userId);
-
-   // const users = db.data.user.filter((obj: { userId: number }) =>{
-      
-   //    if (obj.userId === userId_num){
-   //       return obj;
-   //    }
-   // });
 
    db.data.user = _.reject(db.data.user, function(el) {
       return el.userId === userId_num;
@@ -244,8 +238,6 @@ router.post('/party', requireJWTAuth, async (req, res) =>{
             }
          });
 
-         // return res.send(users.party_joined);
-
          partys = db.data.party.filter((obj: { partyId: number, status: string }) =>{
             if (_.includes(users.party_joined,obj.partyId ) && obj.status == 'Active'){
                return obj;
@@ -258,6 +250,7 @@ router.post('/party', requireJWTAuth, async (req, res) =>{
 });
 
 router.get('/party/:partyId', requireJWTAuth, async (req, res) =>{
+   
    await db.read();
    const partys = db.data.party.filter((obj: { partyId: number }) =>{
       let partyId_num = Number(req.params.partyId);
@@ -287,7 +280,7 @@ router.post('/party/add', requireJWTAuth, async (req, res) => {
 
 await db.data.party.push(partydata);
 await db.write();
-// db.data.user.push(userdata).last().write()
+
 res.send(partydata);
 });
 
@@ -306,13 +299,6 @@ router.put('/party/update/:partyId', requireJWTAuth, async (req, res) =>{
    partys[0].maxguests = req.body.maxguests || partys[0].maxguests;
    partys[0].image = req.body.image || partys[0].image;
 
-   // partys[0] = {
-   //    description : req.body.description,
-   //    registered : req.body.description,
-   //    maxguests : req.body.maxguests,
-   //    image : req.body.image
-   // }
-
    await db.write();
    res.send(partys);
 }
@@ -330,10 +316,6 @@ router.delete('/party/delete/:partyId', requireJWTAuth, async (req, res) =>{
    });
 
    partys[0].status = 'Deactive';
-
-   // db.data.party = _.reject(db.data.party, function(el) {
-   //    return el.partyId === partyId_num;
-   // });
 
    await db.write();
    res.send('Deleted');
