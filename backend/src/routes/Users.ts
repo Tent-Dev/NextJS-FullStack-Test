@@ -18,7 +18,7 @@ const jwtOptions = {
 };
 
 const jwtAuth = new Strategy(jwtOptions, async (payload, done) => {
-   console.log(payload);
+
    await db.read();
    const userData = await db.data.user.find((obj: { email: string }) =>{
       if (obj.email === payload.email){
@@ -27,12 +27,10 @@ const jwtAuth = new Strategy(jwtOptions, async (payload, done) => {
    });
 
    if(userData){
-      console.log('jwtAuth: SUCCESS')
       done(null, true);
    }
    else{
       done(null, false);
-      console.log('jwtAuth: FAIL')
    }
 });
 
@@ -52,7 +50,6 @@ router.get('/user', requireJWTAuth, async (req, res) =>{
 });
 
 router.get('/nonpermission', (req, res) =>{
-console.log('Redirect to login')
 res.status(400).send({
    message: 'No permission',
    code: 1000,

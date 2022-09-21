@@ -4,207 +4,78 @@
       "userId": 0,
       "firstName": "Firstname",
       "lastName": "Lastname",
-      "email": "Angel_flood@hotmail.com",
-      "password": "$2b$10$w9so3HxYScXKos92u41P9Oirb53ZT8TWq.GPCa/45ORloQ45viKTm",
-      "party_joined": [
-        3,
-        4
-      ]
+      "email": "admin@admin.com",
+      "password": "$2b$10$sWhgNyQNVB1LfGiANIBuA.YKr/Y1zJApeqpiVN.YvQbrMHdlEXH/u",
+      "party_joined": []
     },
     {
       "userId": 1,
-      "firstName": "Test",
-      "lastName": "Test",
-      "email": "test",
-      "password": "$2b$10$peLnnIWQbJXQ6fUIzeo3HutqiMCyX99sKB6/o5av.ZjVtUf/dNIr6"
+      "firstName": "Firstname",
+      "lastName": "Lastname",
+      "email": "admin2@admin.com",
+      "password": "$2b$10$36aZP0jJ.8GebJmshGN6J.ot0rmoT1b5ABU.BX2UQJjLnBJYzWS8S",
+      "party_joined": [
+        0
+      ]
     },
     {
       "userId": 2,
-      "firstName": "Chutipas",
-      "lastName": "Test2",
-      "email": "Test22",
-      "party_joined": [],
-      "password": "$2b$10$uwdQGMAYOwYXHFhtzXLohuIj0I701jWzfsoYd0VRv6OhW2X6yGmxu"
-    },
-    {
-      "userId": 3,
-      "firstName": "Chutipas",
-      "lastName": "Borsub",
-      "email": "Test2",
-      "password": "$2b$10$vQozY2luJXUa1Rp3j2N8euzz0y7HHrLjohk9joMlw2fkLFrAVrXf2",
-      "party_joined": [
-        3,
-        6
-      ]
-    },
-    {
-      "userId": 4,
       "firstName": "Firstname",
       "lastName": "Lastname",
-      "email": "admin@admin.com",
-      "password": "$2b$10$fVDrlzt4udiik9ILCDw8a.EqCCXGiGjwq3s3PXdE3MWix3Xag2.Qa",
-      "party_joined": [
-        2
-      ]
-    },
-    {
-      "userId": 5,
-      "firstName": "Firstname",
-      "lastName": "Lastname",
-      "email": "admin2",
-      "password": "$2b$10$1EcgiKVuAdTS0qGfM.VGUOa8qWGYCyM01XwodZGqElQDtZKlfQy5m",
-      "party_joined": [
-        10,
-        3
-      ]
-    },
-    {
-      "userId": 6,
-      "firstName": "Firstname",
-      "lastName": "Lastname",
-      "email": "asdasd",
-      "password": "$2b$10$2mVkX73ITS0yDkZFy2rq6uukiDFeyeDijkut5JxJ/3Uje.n.pxuT6",
+      "email": "admin3@gmail.com",
+      "password": "$2b$10$zEW34aOOc.9908JJxZlzGeangyOVUJWWw/0ch4pzaA/RfXoluzqYi",
       "party_joined": []
     }
   ],
   "party": [
     {
       "partyId": 0,
-      "creatorId": 4,
+      "creatorId": 0,
       "description": "หาคนเล่น ROV",
       "registered": 1,
-      "maxguests": "4",
+      "maxguests": "5",
       "image": "",
       "guest": [
-        4
+        1
       ],
-      "status": "Deactive"
+      "status": "Active"
     },
     {
       "partyId": 1,
-      "creatorId": 4,
-      "description": "ไปกินเลี้ยง",
+      "creatorId": 0,
+      "description": "เที่ยวญี่ปุ่นสิ้นเดือน",
       "registered": 0,
-      "maxguests": "100",
+      "maxguests": "10",
       "image": "",
       "guest": [],
-      "status": "Deactive"
+      "status": "Active"
     },
     {
       "partyId": 2,
-      "creatorId": 4,
-      "description": "เล่น Crypto",
+      "creatorId": 1,
+      "description": "ปาร์ตี้ส่วนตัว",
       "registered": 0,
-      "maxguests": "4",
+      "maxguests": "2",
       "image": "",
       "guest": [],
       "status": "Deactive"
     },
     {
       "partyId": 3,
-      "description": "test",
-      "registered": 4,
-      "maxguests": "10",
+      "creatorId": 1,
+      "description": "ปาร์ตี้ส่วนตัว",
+      "registered": 0,
+      "maxguests": "3",
       "image": "",
-      "guest": [
-        4,
-        0,
-        3,
-        5
-      ],
+      "guest": [],
       "status": "Active"
     },
     {
       "partyId": 4,
-      "description": "test2",
-      "registered": 1,
-      "maxguests": "12",
-      "image": "",
-      "guest": [
-        0
-      ],
-      "status": "Active"
-    },
-    {
-      "partyId": 5,
-      "creatorId": 4,
-      "description": "test",
-      "registered": 1,
-      "maxguests": "2",
-      "image": "",
-      "guest": [
-        4
-      ],
-      "status": "Active"
-    },
-    {
-      "partyId": 6,
-      "creatorId": 4,
-      "description": "tset",
-      "registered": 1,
-      "maxguests": "2",
-      "image": "",
-      "guest": [
-        3
-      ],
-      "status": "Active"
-    },
-    {
-      "partyId": 7,
-      "creatorId": 0,
-      "description": "test",
+      "creatorId": 2,
+      "description": "เที่ยวเชียงใหม่",
       "registered": 0,
-      "maxguests": "123",
-      "image": "",
-      "guest": [],
-      "status": "Deactive"
-    },
-    {
-      "partyId": 8,
-      "creatorId": 3,
-      "description": "tset",
-      "registered": 0,
-      "maxguests": "1234",
-      "image": "",
-      "guest": [],
-      "status": "Active"
-    },
-    {
-      "partyId": 9,
-      "description": "test",
-      "registered": 0,
-      "maxguests": "10",
-      "image": "",
-      "guest": [],
-      "status": "Active"
-    },
-    {
-      "partyId": 10,
-      "description": "auth",
-      "registered": 1,
-      "maxguests": "2",
-      "image": "",
-      "guest": [
-        5
-      ],
-      "status": "Active"
-    },
-    {
-      "partyId": 11,
-      "creatorId": 5,
-      "description": "test",
-      "registered": 0,
-      "maxguests": "1",
-      "image": "",
-      "guest": [],
-      "status": "Deactive"
-    },
-    {
-      "partyId": 12,
-      "creatorId": 5,
-      "description": "test2",
-      "registered": 0,
-      "maxguests": "123",
+      "maxguests": "5",
       "image": "",
       "guest": [],
       "status": "Active"

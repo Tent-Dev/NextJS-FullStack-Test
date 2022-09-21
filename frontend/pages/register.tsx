@@ -32,10 +32,7 @@ const Register: NextPage = () => {
       email : emailRef.current,
       password : passwordRef.current
     }).then(response => {
-      console.log(response.data);
-      setTimeout(() =>{
         router.push('/')
-       }, 6000)
     });
   }
 
