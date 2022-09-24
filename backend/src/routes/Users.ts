@@ -72,7 +72,8 @@ router.post('/user/login', async (req, res) =>{
       bcrypt.compare(req.body.password, userData.password, function(err, result) {
          if(result){
             const payload = {
-               email: req.body.email,
+               userId : userData.userId,
+               email: userData.email,
                created_timestamp: new Date().getTime()
             };
 
@@ -152,6 +153,7 @@ router.post('/user/add', async (req, res) => {
 
 router.put('/user/update/:userId', requireJWTAuth, async (req, res) =>{
    await db.read();
+   let JWT_CHECK = jwt.decode(req.headers.authorization, SECRET);
    let userId_num = Number(req.params.userId);
    const users = db.data.user.filter((obj: { userId: number }) =>{
       if (obj.userId === userId_num){
@@ -159,52 +161,59 @@ router.put('/user/update/:userId', requireJWTAuth, async (req, res) =>{
       }
    });
 
-   users[0].firstName = req.body.firstName || users[0].firstName;
-   users[0].lastName = req.body.lastName || users[0].lastName;
-   users[0].email = req.body.email || users[0].email;
-   users[0].password = req.body.password || users[0].password;
-   
-   if(_.has(req.body, 'party_joined')){
+   if(JWT_CHECK.userId === users[0].userId){
+      users[0].firstName = req.body.firstName || users[0].firstName;
+      users[0].lastName = req.body.lastName || users[0].lastName;
+      users[0].email = req.body.email || users[0].email;
+      users[0].password = req.body.password || users[0].password;
+      
+      if(_.has(req.body, 'party_joined')){
 
-      if(_.isArray(users[0].party_joined)){
-         users[0].party_joined.push(req.body.party_joined);
-      }else{
-         users[0].party_joined = []
-         users[0].party_joined.push(req.body.party_joined);
+         if(_.isArray(users[0].party_joined)){
+            users[0].party_joined.push(req.body.party_joined);
+         }else{
+            users[0].party_joined = []
+            users[0].party_joined.push(req.body.party_joined);
+         }
+
+         const partys = db.data.party.filter((obj: { partyId: number }) =>{
+            if (obj.partyId === req.body.party_joined){
+               return obj;
+            }
+         });
+
+         if(_.isArray(partys[0].guest)){
+            partys[0].guest.push(userId_num);
+         }else{
+            partys[0].guest = []
+            partys[0].guest.push(userId_num);
+         }
+
+         partys[0].registered = partys[0].guest.length
+
+      }
+      else if(_.has(req.body, 'party_leave')){
+         users[0].party_joined = _.pull(users[0].party_joined, req.body.party_leave);
+
+         const partys = db.data.party.filter((obj: { partyId: number }) =>{
+            if (obj.partyId === req.body.party_leave){
+               return obj;
+            }
+         });
+
+         partys[0].guest = _.pull(partys[0].guest, userId_num);
+         partys[0].registered = partys[0].guest.length;
+
       }
 
-      const partys = db.data.party.filter((obj: { partyId: number }) =>{
-         if (obj.partyId === req.body.party_joined){
-            return obj;
-         }
+      await db.write();
+      res.send(users);
+   }else{
+      res.status(400).json({
+         code: 2001,
+         message: 'You don\'t have permission to edit.'
       });
-
-      if(_.isArray(partys[0].guest)){
-         partys[0].guest.push(userId_num);
-      }else{
-         partys[0].guest = []
-         partys[0].guest.push(userId_num);
-      }
-
-      partys[0].registered = partys[0].guest.length
-
    }
-   else if(_.has(req.body, 'party_leave')){
-      users[0].party_joined = _.pull(users[0].party_joined, req.body.party_leave);
-
-      const partys = db.data.party.filter((obj: { partyId: number }) =>{
-         if (obj.partyId === req.body.party_leave){
-            return obj;
-         }
-      });
-
-      partys[0].guest = _.pull(partys[0].guest, userId_num);
-      partys[0].registered = partys[0].guest.length;
-
-   }
-
-   await db.write();
-   res.send(users);
 }
    
 );
@@ -230,7 +239,7 @@ router.delete('/user/delete/:userId', requireJWTAuth, async (req, res) =>{
 
 router.post('/party', requireJWTAuth, async (req, res) =>{
    await db.read();
-   
+
    let partys = db.data.party.filter((obj: { status: string}) =>{
       if (obj.status == 'Active'){
          return obj;
@@ -302,6 +311,8 @@ res.send(partydata);
 router.put('/party/update/:partyId', requireJWTAuth, async (req, res) =>{
    await db.read();
 
+   let JWT_CHECK = jwt.decode(req.headers.authorization, SECRET);
+
    const partys = db.data.party.filter((obj: { partyId: number }) =>{
       let partyId_num = Number(req.params.partyId);
       if (obj.partyId === partyId_num){
@@ -309,19 +320,28 @@ router.put('/party/update/:partyId', requireJWTAuth, async (req, res) =>{
       }
    });
 
-   partys[0].description = req.body.description ||  partys[0].description;
-   partys[0].registered = req.body.registered || partys[0].registered;
-   partys[0].maxguests = req.body.maxguests || partys[0].maxguests;
-   partys[0].image = req.body.image || partys[0].image;
+   if(JWT_CHECK.userId === partys[0].creatorId){
+      partys[0].description = req.body.description ||  partys[0].description;
+      partys[0].registered = req.body.registered || partys[0].registered;
+      partys[0].maxguests = req.body.maxguests || partys[0].maxguests;
+      partys[0].image = req.body.image || partys[0].image;
 
-   await db.write();
-   res.send(partys);
+      await db.write();
+      res.send(partys);
+   }else{
+      res.status(400).json({
+         code: 2001,
+         message: 'You don\'t have permission to edit.'
+      });
+   }
 }
    
 );
 
 router.delete('/party/delete/:partyId', requireJWTAuth, async (req, res) =>{
    await db.read();
+
+   let JWT_CHECK = jwt.decode(req.headers.authorization, SECRET);
 
    let partyId_num = Number(req.params.partyId);
    const partys = db.data.party.filter((obj: { partyId: number }) =>{
@@ -330,10 +350,17 @@ router.delete('/party/delete/:partyId', requireJWTAuth, async (req, res) =>{
       }
    });
 
-   partys[0].status = 'Deactive';
-
-   await db.write();
-   res.send('Deleted');
+   if(JWT_CHECK.userId === partys[0].creatorId){
+      partys[0].status = 'Deactive';
+      
+      await db.write();
+      res.send('Deleted');
+   }else{
+      res.status(400).json({
+         code: 2001,
+         message: 'You don\'t have permission to edit.'
+      });
+   }
 });
 
 export default router;

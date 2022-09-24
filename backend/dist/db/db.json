@@ -28,7 +28,7 @@
     },
     {
       "userId": 3,
-      "firstName": "Firstname",
+      "firstName": "Chutipas",
       "lastName": "Lastname",
       "email": "admin3@admin.com",
       "password": "$2b$10$MIVqRbhf6uMZIVFKONzOseCQiCzO70Vj99r1Ac.2FFFpsJvjla0wK",
@@ -94,6 +94,16 @@
       "description": "1",
       "registered": 0,
       "maxguests": "0",
+      "image": "",
+      "guest": [],
+      "status": "Deactive"
+    },
+    {
+      "partyId": 6,
+      "creatorId": 3,
+      "description": "test admin3",
+      "registered": 0,
+      "maxguests": 100,
       "image": "",
       "guest": [],
       "status": "Deactive"
