@@ -6,7 +6,8 @@
       "lastName": "Lastname",
       "email": "admin@admin.com",
       "password": "$2b$10$sWhgNyQNVB1LfGiANIBuA.YKr/Y1zJApeqpiVN.YvQbrMHdlEXH/u",
-      "party_joined": []
+      "party_joined": [],
+      "status": "Active"
     },
     {
       "userId": 1,
@@ -16,7 +17,8 @@
       "password": "$2b$10$36aZP0jJ.8GebJmshGN6J.ot0rmoT1b5ABU.BX2UQJjLnBJYzWS8S",
       "party_joined": [
         0
-      ]
+      ],
+      "status": "Active"
     },
     {
       "userId": 2,
@@ -24,7 +26,8 @@
       "lastName": "Lastname",
       "email": "admin3@gmail.com",
       "password": "$2b$10$zEW34aOOc.9908JJxZlzGeangyOVUJWWw/0ch4pzaA/RfXoluzqYi",
-      "party_joined": []
+      "party_joined": [],
+      "status": "Active"
     },
     {
       "userId": 3,
@@ -32,7 +35,17 @@
       "lastName": "Lastname",
       "email": "admin3@admin.com",
       "password": "$2b$10$MIVqRbhf6uMZIVFKONzOseCQiCzO70Vj99r1Ac.2FFFpsJvjla0wK",
-      "party_joined": []
+      "party_joined": [],
+      "status": "Deactive"
+    },
+    {
+      "userId": 4,
+      "firstName": "mydelete",
+      "lastName": "Test2",
+      "email": "mydelete@admin.com",
+      "password": "$2b$10$gi2KjrHxHhKlnqbUZTgAM.ZkOGlhawvCjJ1fe.PUwPTmqVto4IQJq",
+      "party_joined": [],
+      "status": "Deactive"
     }
   ],
   "party": [
@@ -104,6 +117,16 @@
       "description": "test admin3",
       "registered": 0,
       "maxguests": 100,
+      "image": "",
+      "guest": [],
+      "status": "Deactive"
+    },
+    {
+      "partyId": 7,
+      "creatorId": 4,
+      "description": "testde",
+      "registered": 0,
+      "maxguests": "2",
       "image": "",
       "guest": [],
       "status": "Deactive"

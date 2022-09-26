@@ -62,8 +62,8 @@ router.post('/user/login', async (req, res) =>{
 
    let userData: any = {};
 
-   await db.data.user.find((obj: {password: string, email: string }) =>{
-      if (obj.email.toLowerCase() === req.body.email.toLowerCase()){
+   await db.data.user.find((obj: {status: string, password: string, email: string }) =>{
+      if (obj.email.toLowerCase() === req.body.email.toLowerCase() && obj.status === 'Active'){
          userData = obj;
       }
    });
@@ -139,12 +139,16 @@ router.post('/user/add', async (req, res) => {
             lastName : req.body.lastName,
             email : req.body.email,
             password : hash,
-            party_joined: []
+            party_joined: [],
+            status: 'Active'
          }
    
          await db.data.user.push(userdata);
          await db.write();
-         res.send(userdata);
+         res.status(201).json({
+            code: 201,
+            message: 'Create Account successfully.'
+         });
       });
    }
 
@@ -207,7 +211,10 @@ router.put('/user/update/:userId', requireJWTAuth, async (req, res) =>{
       }
 
       await db.write();
-      res.send(users);
+      res.status(200).json({
+         code: 200,
+         message: 'Updated successfully.'
+      });
    }else{
       res.status(400).json({
          code: 2001,
@@ -222,17 +229,43 @@ router.delete('/user/delete/:userId', requireJWTAuth, async (req, res) =>{
    await db.read();
 
    let userId_num = Number(req.params.userId);
-
-   db.data.user = _.reject(db.data.user, function(el) {
-      return el.userId === userId_num;
+   const users = db.data.user.filter((obj: { status: string, userId: number }) =>{
+      if (obj.userId === userId_num){
+         obj.status = 'Deactive';
+         return obj;
+      }
    });
 
-   db.data.party = _.reject(db.data.party, function(el) {
-      return el.creatorId === userId_num;
+   const partys = db.data.party.filter((obj: {status: string, creatorId: number }) =>{
+      if (obj.creatorId === userId_num){
+         obj.status = "Deactive";
+         return obj;
+      }
    });
 
    await db.write();
-   res.send(db.data.user);
+
+   res.status(200).json({
+      code: 200,
+      message: 'Deleted successfully'
+   });
+});
+
+router.put('/user/force', requireJWTAuth, async (req, res) =>{
+   await db.read();
+
+   db.data.user.filter((obj: { status: string }) =>{
+      if (!_.has(obj, 'status')){
+         obj.status = 'Active';
+         return obj;
+      }
+   });
+
+   await db.write();
+   res.status(200).json({
+      code: 200,
+      message: 'Updated successfully.'
+   });
 });
 
 // Party
@@ -282,7 +315,11 @@ router.get('/party/:partyId', requireJWTAuth, async (req, res) =>{
          return obj;
       }
    });
-   res.send(partys);
+
+   res.status(200).json({
+      code: 200,
+      message: 'Get data successfully.'
+   });
 });
 
 router.post('/party/add', requireJWTAuth, async (req, res) => {
@@ -327,7 +364,10 @@ router.put('/party/update/:partyId', requireJWTAuth, async (req, res) =>{
       partys[0].image = req.body.image || partys[0].image;
 
       await db.write();
-      res.send(partys);
+      res.status(201).json({
+         code: 201,
+         message: 'Create party successfully.'
+      });
    }else{
       res.status(400).json({
          code: 2001,
