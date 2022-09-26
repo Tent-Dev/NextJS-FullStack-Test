@@ -54,13 +54,11 @@ const HomeApp: NextPage = (props: any) => {
     await axios.put(`http://localhost:3100/api/user/update/${props.post.users.user.userId}`, {
       party_joined : id
     }).then(response => {
-      console.log(response.data);
       const newData = dataparty.findIndex( (obj: { partyId: number; }) => obj.partyId == id);
       dataparty[newData].registered = dataparty[newData].registered+1;
-
       dispatch({
         type: 'UPDATE_USER',
-        data: response.data[0].party_joined
+        data: response.data.data
       });
       
       Setdataparty(dataparty);
@@ -68,7 +66,6 @@ const HomeApp: NextPage = (props: any) => {
   }
 
   const fetchData = async () =>{
-    console.log(props.post.users.Token);
     axios.defaults.headers.common['Authorization'] = props.post.users.Token;
     await axios.post('http://localhost:3100/api/party').then(response => {
       console.log(response.data);

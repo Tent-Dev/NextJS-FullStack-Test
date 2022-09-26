@@ -210,10 +210,19 @@ router.put('/user/update/:userId', requireJWTAuth, async (req, res) =>{
 
       }
 
+      let res_data = {
+         userId: users[0].userId,
+         firstName : users[0].firstName,
+         lastName: users[0].lastName,
+         email: users[0].email,
+         party_joined:  users[0].party_joined
+      }
+
       await db.write();
       res.status(200).json({
          code: 200,
-         message: 'Updated successfully.'
+         message: 'Updated successfully.',
+         data: res_data
       });
    }else{
       res.status(400).json({

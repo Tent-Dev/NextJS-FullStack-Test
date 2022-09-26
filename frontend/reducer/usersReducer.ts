@@ -5,7 +5,7 @@ function userReducer(state = {}, action: {[key: string]: any}) {
       case 'LOGIN_SUCCESS':
         return state = action.data
       case 'UPDATE_USER':
-        return { ...state, party_joined: action.data }
+        return { ...state, user: action.data }
       case 'REMOVE':
         return state
       default:
