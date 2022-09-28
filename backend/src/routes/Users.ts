@@ -225,45 +225,6 @@ router.put('/user/update/:userId', requireJWTAuth, async (req, res) =>{
       users[0].email = req.body.email || users[0].email;
       users[0].password = req.body.password || users[0].password;
       
-      if(_.has(req.body, 'party_joined')){
-
-         if(_.isArray(users[0].party_joined)){
-            users[0].party_joined.push(req.body.party_joined);
-         }else{
-            users[0].party_joined = []
-            users[0].party_joined.push(req.body.party_joined);
-         }
-
-         const partys = db.data.party.filter((obj: { partyId: number }) =>{
-            if (obj.partyId === req.body.party_joined){
-               return obj;
-            }
-         });
-
-         if(_.isArray(partys[0].guest)){
-            partys[0].guest.push(userId_num);
-         }else{
-            partys[0].guest = []
-            partys[0].guest.push(userId_num);
-         }
-
-         partys[0].registered = partys[0].guest.length
-
-      }
-      else if(_.has(req.body, 'party_leave')){
-         users[0].party_joined = _.pull(users[0].party_joined, req.body.party_leave);
-
-         const partys = db.data.party.filter((obj: { partyId: number }) =>{
-            if (obj.partyId === req.body.party_leave){
-               return obj;
-            }
-         });
-
-         partys[0].guest = _.pull(partys[0].guest, userId_num);
-         partys[0].registered = partys[0].guest.length;
-
-      }
-
       let res_data = {
          userId: users[0].userId,
          firstName : users[0].firstName,
@@ -437,9 +398,85 @@ router.put('/party/update/:partyId', requireJWTAuth, async (req, res) =>{
          message: 'You don\'t have permission to edit.'
       });
    }
+});
+
+router.patch('/party/action/:userId', requireJWTAuth, async (req, res) =>{
+   await db.read();
+   
+   let userId_num = Number(req.params.userId);
+   let JWT_CHECK = jwt.verify(req.headers.authorization, SECRET);
+   
+   const users = db.data.user.filter((obj: { userId: number }) =>{
+      if (obj.userId === userId_num){
+         return obj;
+      }
+   });
+
+   if(JWT_CHECK.userId === users[0].userId){
+
+      if(_.has(req.body, 'party_joined')){
+
+         if(_.isArray(users[0].party_joined)){
+            users[0].party_joined.push(req.body.party_joined);
+         }else{
+            users[0].party_joined = []
+            users[0].party_joined.push(req.body.party_joined);
+         }
+
+         const partys = db.data.party.filter((obj: { partyId: number }) =>{
+            if (obj.partyId === req.body.party_joined){
+               return obj;
+            }
+         });
+
+         if(_.isArray(partys[0].guest)){
+            partys[0].guest.push(userId_num);
+         }else{
+            partys[0].guest = []
+            partys[0].guest.push(userId_num);
+         }
+
+         partys[0].registered = partys[0].guest.length
+
+      }
+      else if(_.has(req.body, 'party_leave')){
+         users[0].party_joined = _.pull(users[0].party_joined, req.body.party_leave);
+
+         const partys = db.data.party.filter((obj: { partyId: number }) =>{
+            if (obj.partyId === req.body.party_leave){
+               return obj;
+            }
+         });
+
+         partys[0].guest = _.pull(partys[0].guest, userId_num);
+         partys[0].registered = partys[0].guest.length;
+
+      }
+
+      let res_data = {
+         userId: users[0].userId,
+         firstName : users[0].firstName,
+         lastName: users[0].lastName,
+         email: users[0].email,
+         party_joined:  users[0].party_joined
+      }
+
+      await db.write();
+      res.status(200).json({
+         code: 200,
+         message: 'Updated successfully.',
+         data: res_data
+      });
+   }else{
+      res.status(400).json({
+         code: 2001,
+         message: 'You don\'t have permission to edit.'
+      });
+   }
 }
    
 );
+
 
 router.delete('/party/delete/:partyId', requireJWTAuth, async (req, res) =>{
    await db.read();

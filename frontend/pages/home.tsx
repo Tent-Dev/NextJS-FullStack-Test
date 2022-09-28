@@ -49,9 +49,9 @@ const HomeApp: NextPage = (props: any) => {
     // }
   },[])
 
-  const updateData = async (id: number) =>{
+  const joinParty = async (id: number) =>{
     console.log('Update data ' + id);
-    await axios.put(`http://localhost:3100/api/user/update/${props.post.users.user.userId}`, {
+    await axios.patch(`http://localhost:3100/api/party/action/${props.post.users.user.userId}`, {
       party_joined : id
     }).then(response => {
       const newData = dataparty.findIndex( (obj: { partyId: number; }) => obj.partyId == id);
@@ -122,7 +122,7 @@ const HomeApp: NextPage = (props: any) => {
           >
             <Row gutter={[16, 16]}>
               {dataparty.map((element: { partyId: any; }) => (
-                <ItemBox mode={'join'} data={element} key={element.partyId} updateData={updateData}/>
+                <ItemBox mode={'join'} data={element} key={element.partyId} joinParty={joinParty}/>
               ))}
             </Row>
           </InfiniteScroll>

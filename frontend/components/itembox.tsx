@@ -83,13 +83,13 @@ const ItemBox = (props: any) => {
             console.log('Join party ' + props.data.partyId)
             setBtntext('Joined')
             setBtndisable(true)
-            props.updateData(props.data.partyId)
+            props.joinParty(props.data.partyId)
           }
           else if (mode == 'own') {
-            await props.deleteData(props.data.partyId)
+            await props.deleteParty(props.data.partyId)
           }
           else if (mode == 'joined') {
-            props.leaveData(props.data.partyId)
+            props.leaveParty(props.data.partyId)
             console.log('Leave party ' + props.data.partyId)
           }
 

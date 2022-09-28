@@ -19,7 +19,8 @@
         1,
         3,
         0,
-        4
+        4,
+        9
       ],
       "status": "Active"
     },
@@ -163,11 +164,13 @@
       "partyId": 9,
       "creatorId": 1,
       "description": "test02",
-      "registered": 0,
+      "registered": 1,
       "maxguests": "2134",
       "image": "",
-      "guest": [],
-      "status": "Active"
+      "guest": [
+        1
+      ],
+      "status": "Deactive"
     },
     {
       "partyId": 10,

@@ -72,9 +72,9 @@ const MyPartyList: NextPage = (props: any) => {
         
     }
 
-    const leaveData = async (id : number) =>{
+    const leaveParty = async (id : number) =>{
         axios.defaults.headers.common['Authorization'] = props.post.users.token;
-        await axios.put(`http://localhost:3100/api/user/update/${props.post.users.user.userId}`,{
+        await axios.patch(`http://localhost:3100/api/party/action/${props.post.users.user.userId}`,{
             party_leave: id
         }).then(response => {
             console.log(response.data);
@@ -89,7 +89,7 @@ const MyPartyList: NextPage = (props: any) => {
 
     }
 
-  const deleteData = async (id : number) =>{
+  const deleteParty = async (id : number) =>{
     axios.defaults.headers.common['Authorization'] = props.post.users.token;
     await axios.delete(`http://localhost:3100/api/party/delete/${id}`).then(response => {
         let newList = dataparty.filter((obj: {partyId: number; }) => (obj.partyId !== id));
@@ -133,7 +133,7 @@ const MyPartyList: NextPage = (props: any) => {
                 >
                     <Row gutter={[16, 16]}>
                         {dataparty.map((element: { partyId: any; }) => (
-                        <ItemBox mode={dataType} data={element} key={element.partyId} leaveData={leaveData} deleteData={deleteData}/>
+                        <ItemBox mode={dataType} data={element} key={element.partyId} leaveParty={leaveParty} deleteParty={deleteParty}/>
                         ))}
                     </Row>
             </InfiniteScroll>
