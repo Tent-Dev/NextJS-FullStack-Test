@@ -50,7 +50,7 @@ const MyPartyList: NextPage = (props: any) => {
         let data: any[] = [];
 
         if(_.has(props.post.users, 'user')){
-            axios.defaults.headers.common['Authorization'] = props.post.users.Token;
+            axios.defaults.headers.common['Authorization'] = props.post.users.token;
             await axios.post('http://localhost:3100/api/party', {
                 creatorId : props.post.users.user.userId,
                 mode : dataType
@@ -73,7 +73,7 @@ const MyPartyList: NextPage = (props: any) => {
     }
 
     const leaveData = async (id : number) =>{
-        axios.defaults.headers.common['Authorization'] = props.post.users.Token;
+        axios.defaults.headers.common['Authorization'] = props.post.users.token;
         await axios.put(`http://localhost:3100/api/user/update/${props.post.users.user.userId}`,{
             party_leave: id
         }).then(response => {
@@ -90,7 +90,7 @@ const MyPartyList: NextPage = (props: any) => {
     }
 
   const deleteData = async (id : number) =>{
-    axios.defaults.headers.common['Authorization'] = props.post.users.Token;
+    axios.defaults.headers.common['Authorization'] = props.post.users.token;
     await axios.delete(`http://localhost:3100/api/party/delete/${id}`).then(response => {
         let newList = dataparty.filter((obj: {partyId: number; }) => (obj.partyId !== id));
         Setdataparty(newList);

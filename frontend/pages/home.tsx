@@ -66,7 +66,7 @@ const HomeApp: NextPage = (props: any) => {
   }
 
   const fetchData = async () =>{
-    axios.defaults.headers.common['Authorization'] = props.post.users.Token;
+    axios.defaults.headers.common['Authorization'] = props.post.users.token;
     await axios.post('http://localhost:3100/api/party').then(response => {
       console.log(response.data);
       Setdataparty(response.data);

@@ -2,13 +2,15 @@ import express from 'express';
 import dbs from '../db/db.js';
 import _ from 'lodash';
 import bcrypt from 'bcrypt';
-import jwt from "jwt-simple";
+import jwt from "jsonwebtoken";
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import passport from "passport";
+import * as dotenv from 'dotenv';
+dotenv.config();
 const db = dbs();
 const router = express.Router();
 const saltRounds = 10;
-const SECRET = "MY_SECRET_KEY";
+const { SECRET, HTTP_URL, API_URL } = process.env;
 ////////////////////JWT Middleware Zone////////////////////
 const jwtOptions = {
     jwtFromRequest: ExtractJwt.fromHeader("authorization"),
@@ -21,7 +23,7 @@ const jwtAuth = new Strategy(jwtOptions, async (payload, done) => {
             return obj;
         }
     });
-    if (userData) {
+    if (userData && Date.now() <= payload.exp * 1000) {
         done(null, true);
     }
     else {
@@ -29,7 +31,7 @@ const jwtAuth = new Strategy(jwtOptions, async (payload, done) => {
     }
 });
 passport.use(jwtAuth);
-const requireJWTAuth = passport.authenticate("jwt", { session: false, failureRedirect: 'http://localhost:3100/api/nonpermission' });
+const requireJWTAuth = passport.authenticate("jwt", { session: false, failureRedirect: API_URL + '/api/nonpermission' });
 ////////////////////End of JWT Middleware Zone/////////////////////////////
 router.get('/', (req, res) => res.send('Hello !'));
 router.get('/user', requireJWTAuth, async (req, res) => {
@@ -41,7 +43,7 @@ router.get('/nonpermission', (req, res) => {
     res.status(400).send({
         message: 'No permission',
         code: 1000,
-        redirectTo: 'http://localhost:3000'
+        redirectTo: HTTP_URL
     });
 });
 router.post('/user/login', async (req, res) => {
@@ -67,7 +69,9 @@ router.post('/user/login', async (req, res) => {
                     lastName: userData.lastName,
                     party_joined: userData.party_joined
                 };
-                res.send({ user: outputData, Token: jwt.encode(payload, SECRET) });
+                const token = jwt.sign(payload, SECRET, { expiresIn: '1h' });
+                const refreshToken = jwt.sign(payload, SECRET, { expiresIn: '5h' });
+                res.send({ user: outputData, token: token, refreshToken: refreshToken });
             }
             else {
                 res.status(400).json({
@@ -84,6 +88,46 @@ router.post('/user/login', async (req, res) => {
             message: 'User not found'
         });
         return;
+    }
+});
+router.post('/user/token', async (req, res) => {
+    const refreshToken = req.headers.authorization;
+    if (!refreshToken) {
+        res.redirect('/nonpermission');
+    }
+    else {
+        try {
+            await db.read();
+            let userData = {};
+            let JWT_CHECK = jwt.verify(refreshToken, SECRET);
+            await db.data.user.find((obj) => {
+                if (obj.email.toLowerCase() === JWT_CHECK.email.toLowerCase() && obj.status === 'Active') {
+                    userData = obj;
+                }
+            });
+            const payload = {
+                userId: userData.userId,
+                email: userData.email,
+                created_timestamp: new Date().getTime()
+            };
+            // let outputData = {
+            //    userId: userData.userId,
+            //    email: userData.email,
+            //    firstName: userData.firstName,
+            //    lastName: userData.lastName,
+            //    party_joined: userData.party_joined
+            // }
+            const token = jwt.sign(payload, SECRET, { expiresIn: '1h' });
+            const newRefreshToken = jwt.sign(payload, SECRET, { expiresIn: '5h' });
+            // res.send({user: outputData, token : token, refreshToken: newRefreshToken});
+            res.send({ token: token, refreshToken: newRefreshToken });
+        }
+        catch (error) {
+            res.status(400).json({
+                code: 1003,
+                message: 'Refresh token error'
+            });
+        }
     }
 });
 router.get('/user/:userId', requireJWTAuth, async (req, res) => {
@@ -135,8 +179,8 @@ router.post('/user/add', async (req, res) => {
 });
 router.put('/user/update/:userId', requireJWTAuth, async (req, res) => {
     await db.read();
-    let JWT_CHECK = jwt.decode(req.headers.authorization, SECRET);
     let userId_num = Number(req.params.userId);
+    let JWT_CHECK = jwt.verify(req.headers.authorization, SECRET);
     const users = db.data.user.filter((obj) => {
         if (obj.userId === userId_num) {
             return obj;
@@ -299,7 +343,7 @@ router.post('/party/add', requireJWTAuth, async (req, res) => {
 });
 router.put('/party/update/:partyId', requireJWTAuth, async (req, res) => {
     await db.read();
-    let JWT_CHECK = jwt.decode(req.headers.authorization, SECRET);
+    let JWT_CHECK = jwt.verify(req.headers.authorization, SECRET);
     const partys = db.data.party.filter((obj) => {
         let partyId_num = Number(req.params.partyId);
         if (obj.partyId === partyId_num) {
@@ -326,7 +370,7 @@ router.put('/party/update/:partyId', requireJWTAuth, async (req, res) => {
 });
 router.delete('/party/delete/:partyId', requireJWTAuth, async (req, res) => {
     await db.read();
-    let JWT_CHECK = jwt.decode(req.headers.authorization, SECRET);
+    let JWT_CHECK = jwt.verify(req.headers.authorization, SECRET);
     let partyId_num = Number(req.params.partyId);
     const partys = db.data.party.filter((obj) => {
         if (obj.partyId === partyId_num) {

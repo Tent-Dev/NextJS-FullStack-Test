@@ -6,11 +6,12 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { Button, Input, Checkbox, Form, message } from "antd";
 import myStyles from '../styles/MyComponent.module.css'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import axios from 'axios';
 import { useDispatch, connect } from "react-redux";
+import _ from 'lodash'
 
-const Home: NextPage = () => {
+const Home: NextPage = (props: any) => {
   const [loadings, setLoadings] = useState([]);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -25,7 +26,12 @@ const Home: NextPage = () => {
     passwordRef.current = e.target.value
   }
 
-
+  // useEffect(() =>{
+  //   if(_.has(props, 'post') && _.has(props.post, 'users')){
+  //     router.push('/home');
+  //   }
+  // },[])
+  
   const clickLogin = async () =>{
     await enterLoading(0);
 

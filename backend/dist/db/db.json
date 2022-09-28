@@ -11,7 +11,7 @@
     },
     {
       "userId": 1,
-      "firstName": "Firstname",
+      "firstName": "Chutipas",
       "lastName": "Lastname",
       "email": "admin2@admin.com",
       "password": "$2b$10$36aZP0jJ.8GebJmshGN6J.ot0rmoT1b5ABU.BX2UQJjLnBJYzWS8S",
@@ -165,6 +165,16 @@
       "description": "test02",
       "registered": 0,
       "maxguests": "2134",
+      "image": "",
+      "guest": [],
+      "status": "Active"
+    },
+    {
+      "partyId": 10,
+      "creatorId": 1,
+      "description": "test",
+      "registered": 0,
+      "maxguests": "123",
       "image": "",
       "guest": [],
       "status": "Active"
