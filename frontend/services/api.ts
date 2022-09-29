@@ -33,7 +33,7 @@ const instance = axios.create({
       console.log('----Error----')
       console.log(err);
     //   console.log(originalConfig)
-      if (originalConfig.url !== "/user/login" && err.response) {
+      if (originalConfig.url !== "/user/login" || originalConfig.url !== "/nopermission" && err.response) {
         // Access Token was expired
         console.log('Access Token was expired');
         if (err.response.status === 401 && !originalConfig._retry) {
@@ -53,9 +53,12 @@ const instance = axios.create({
           } catch (_error) {
             return Promise.reject(_error);
           }
+        }else{
+            console.log('ERROR_OTHER: ', err.response.status);
+            // instance.post("/nopermission");
+            window.location.href = '/';
         }
       }
-  
       return Promise.reject(err);
     }
   );
