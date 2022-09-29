@@ -17,6 +17,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from 'axios';
 import { useDispatch, connect } from "react-redux";
 import _ from 'lodash';
+import UserService from "../services/user.service";
 
 
 const antIcon = (
@@ -66,19 +67,34 @@ const HomeApp: NextPage = (props: any) => {
   }
 
   const fetchData = async () =>{
-    axios.defaults.headers.common['Authorization'] = props.post.users.token;
-    await axios.post('http://localhost:3100/api/party').then(response => {
-      console.log(response.data);
-      Setdataparty(response.data);
-      Sethasmore(false);
-      Setshowspin(false);
-    }).catch(err =>{
-      console.log(err);
+    // axios.defaults.headers.common['Authorization'] = props.post.users.token;
+    // await axios.post('http://localhost:3100/api/party').then(response => {
+    //   console.log(response.data);
+    //   Setdataparty(response.data);
+    //   Sethasmore(false);
+    //   Setshowspin(false);
+    // }).catch(err =>{
+    //   console.log(err);
 
-      if(err.response.data.code == 1000){
-        router.push(err.response.data.redirectTo);
-      }
-    });
+    //   if(err.response.data.code == 1000){
+    //     router.push(err.response.data.redirectTo);
+    //   }
+    // });
+
+    const data = await UserService.getParty().then(response => {
+        console.log(response.data);
+        Setdataparty(response.data);
+        Sethasmore(false);
+        Setshowspin(false);
+      }).catch(err =>{
+        console.log(err);
+  
+        if(err.response.data.code == 1000){
+          router.push(err.response.data.redirectTo);
+        }
+      });
+
+    // console.log(data);
     
   }
 

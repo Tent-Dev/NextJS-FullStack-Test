@@ -10,6 +10,8 @@ import { useEffect, useRef, useState } from 'react'
 import axios from 'axios';
 import { useDispatch, connect } from "react-redux";
 import _ from 'lodash'
+import AuthService from "../services/auth.service";
+
 
 const Home: NextPage = (props: any) => {
   const [loadings, setLoadings] = useState([]);
@@ -35,19 +37,30 @@ const Home: NextPage = (props: any) => {
   const clickLogin = async () =>{
     await enterLoading(0);
 
-    await axios.post('http://localhost:3100/api/user/login', {
-      email : emailRef.current,
-      password : passwordRef.current
-    }).then(response => {
-      console.log(response.data);
+  //   await axios.post('http://localhost:3100/api/user/login', {
+  //     email : emailRef.current,
+  //     password : passwordRef.current
+  //   }).then(response => {
+  //     console.log(response.data);
 
-      // response.data.isLoggedIn = true;
+  //     // response.data.isLoggedIn = true;
 
-      dispatch({
-        type: 'LOGIN_SUCCESS',
-        data: response.data
-      }); 
-      router.push('/home')
+  //     dispatch({
+  //       type: 'LOGIN_SUCCESS',
+  //       data: response.data
+  //     }); 
+  //     router.push('/home')
+  //   }).catch(err => {
+  //     if(err.response.data.code == 1002){
+  //       message.error('รหัสผ่านไม่ถูกต้อง');
+  //     }else if(err.response.data.code == 1003){
+  //       message.error('ไม่พบบัญชีผู้ใช้');
+  //     }
+  //     console.log(err)
+  //  });
+
+    AuthService.userLogin(emailRef.current, passwordRef.current).then(() =>{
+      router.push('/home');
     }).catch(err => {
       if(err.response.data.code == 1002){
         message.error('รหัสผ่านไม่ถูกต้อง');
@@ -55,7 +68,7 @@ const Home: NextPage = (props: any) => {
         message.error('ไม่พบบัญชีผู้ใช้');
       }
       console.log(err)
-   });
+    });
   }
 
   const enterLoading = async (index: number) => {

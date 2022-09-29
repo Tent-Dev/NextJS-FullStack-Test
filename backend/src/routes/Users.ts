@@ -12,7 +12,7 @@ const db: any = dbs();
 const router = express.Router();
 const saltRounds = 10;
 
-const { SECRET, HTTP_URL, API_URL } = process.env;
+const { SECRET, HTTP_URL, API_URL, TOKEN_EXPIRE, REFRESH_TOKEN_EXPIRE } = process.env;
 
 ////////////////////JWT Middleware Zone////////////////////
 const jwtOptions = {
@@ -22,6 +22,7 @@ const jwtOptions = {
 
 const jwtAuth = new Strategy(jwtOptions, async (payload, done) => {
 
+   console.log(payload);
    await db.read();
    const userData = await db.data.user.find((obj: { email: string }) =>{
       if (obj.email === payload.email){
@@ -53,7 +54,7 @@ router.get('/user', requireJWTAuth, async (req, res) =>{
 });
 
 router.get('/nonpermission', (req, res) =>{
-   res.status(400).send({
+   res.status(401).send({
       message: 'No permission',
       code: 1000,
       redirectTo: HTTP_URL
@@ -87,8 +88,8 @@ router.post('/user/login', async (req, res) =>{
                lastName: userData.lastName,
                party_joined: userData.party_joined
             }
-            const token = jwt.sign(payload, SECRET, { expiresIn: '1h' });
-            const refreshToken  = jwt.sign(payload, SECRET, { expiresIn: '5h' });
+            const token = jwt.sign(payload, SECRET, { expiresIn: TOKEN_EXPIRE });
+            const refreshToken  = jwt.sign(payload, SECRET, { expiresIn: REFRESH_TOKEN_EXPIRE });
             res.send({user: outputData, token : token, refreshToken: refreshToken});
          }else{
             res.status(400).json({
@@ -109,9 +110,9 @@ router.post('/user/login', async (req, res) =>{
 
 router.post('/user/token', async (req, res) =>{
 
-   const refreshToken = req.headers.authorization;
+   const refreshToken = req.body.refreshToken;
    if(!refreshToken){
-      res.redirect('/nonpermission');
+      res.redirect(API_URL+'/api/nonpermission');
    }else{
       try {
          await db.read();
@@ -132,18 +133,18 @@ router.post('/user/token', async (req, res) =>{
             created_timestamp: new Date().getTime()
          };
 
-         // let outputData = {
-         //    userId: userData.userId,
-         //    email: userData.email,
-         //    firstName: userData.firstName,
-         //    lastName: userData.lastName,
-         //    party_joined: userData.party_joined
-         // }
+         let outputData = {
+            userId: userData.userId,
+            email: userData.email,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            party_joined: userData.party_joined
+         }
 
-         const token = jwt.sign(payload, SECRET, { expiresIn: '1h' });
-         const newRefreshToken  = jwt.sign(payload, SECRET, { expiresIn: '5h' });
+         const token = jwt.sign(payload, SECRET, { expiresIn: TOKEN_EXPIRE });
+         const newRefreshToken  = jwt.sign(payload, SECRET, { expiresIn: REFRESH_TOKEN_EXPIRE });
          // res.send({user: outputData, token : token, refreshToken: newRefreshToken});
-         res.send({token : token, refreshToken: newRefreshToken});
+         res.send({user: outputData, token : token, refreshToken: newRefreshToken});
       } catch (error) {
          res.status(400).json({
             code: 1003,
