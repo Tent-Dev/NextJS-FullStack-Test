@@ -1428,7 +1428,12 @@
   "resolved" "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   "version" "1.4.0"
 
-"next@12.3.0":
+"next-redux-wrapper@^8.0.0":
+  "integrity" "sha512-zKRdpvDeqNXQr1j5DUWwsB2fz6XpHR32iy2qJGItTKLsbLB9GvtxDL9b4mFCfhDvnzy5dw97UqMjWDpFY8h0zA=="
+  "resolved" "https://registry.npmjs.org/next-redux-wrapper/-/next-redux-wrapper-8.0.0.tgz"
+  "version" "8.0.0"
+
+"next@>=9", "next@12.3.0":
   "integrity" "sha512-GpzI6me9V1+XYtfK0Ae9WD0mKqHyzQlGq1xH1rzNIYMASo4Tkl4rTe9jSqtBpXFhOS33KohXs9ZY38Akkhdciw=="
   "resolved" "https://registry.npmjs.org/next/-/next-12.3.0.tgz"
   "version" "12.3.0"
@@ -2026,7 +2031,7 @@
   "resolved" "https://registry.npmjs.org/react-lines-ellipsis/-/react-lines-ellipsis-0.15.3.tgz"
   "version" "0.15.3"
 
-"react-redux@^7.2.1 || ^8.0.2", "react-redux@^8.0.2":
+"react-redux@*", "react-redux@^7.2.1 || ^8.0.2", "react-redux@^8.0.2":
   "integrity" "sha512-nBwiscMw3NoP59NFCXFf02f8xdo+vSHT/uZ1ldDwF7XaTpzm+Phk97VT4urYBl5TYAPNVaFm12UHAEyzkpNzRA=="
   "resolved" "https://registry.npmjs.org/react-redux/-/react-redux-8.0.2.tgz"
   "version" "8.0.2"

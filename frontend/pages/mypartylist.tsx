@@ -13,6 +13,8 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { useDispatch, connect } from "react-redux";
 import axios from 'axios';
 import _ from 'lodash';
+import UserService from "../services/user.service";
+
 
 const antIcon = (
     <LoadingOutlined
@@ -73,10 +75,7 @@ const MyPartyList: NextPage = (props: any) => {
     }
 
     const leaveParty = async (id : number) =>{
-        axios.defaults.headers.common['Authorization'] = props.post.users.token;
-        await axios.patch(`http://localhost:3100/api/party/action/${props.post.users.user.userId}`,{
-            party_leave: id
-        }).then(response => {
+        UserService.actionParty(props.post.users.user.userId,id,'leave').then(response => {
             console.log(response.data);
             dispatch({
                 type: 'UPDATE_USER',

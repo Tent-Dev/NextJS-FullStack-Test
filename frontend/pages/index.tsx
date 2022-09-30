@@ -11,11 +11,18 @@ import axios from 'axios';
 import { useDispatch, connect } from "react-redux";
 import _ from 'lodash'
 import AuthService from "../services/auth.service";
+// import {wrapper, State} from '../reducer/store';
+
+// export const getServerSideProps = wrapper.getServerSideProps(store => ({req, res,}) => {
+//   let st = store.getState();
+//   console.log(st);
+//   return {props : {test: st}};
+// });
+
 
 
 const Home: NextPage = (props: any) => {
   const [loadings, setLoadings] = useState([]);
-  const dispatch = useDispatch();
   const router = useRouter();
   const emailRef = useRef('');
   const passwordRef = useRef('');
@@ -32,6 +39,10 @@ const Home: NextPage = (props: any) => {
   //   if(_.has(props, 'post') && _.has(props.post, 'users')){
   //     router.push('/home');
   //   }
+  // },[])
+
+  // useEffect(() =>{
+  //   console.log(props.test)
   // },[])
   
   const clickLogin = async () =>{
@@ -60,8 +71,11 @@ const Home: NextPage = (props: any) => {
   //  });
 
     AuthService.userLogin(emailRef.current, passwordRef.current).then(() =>{
+      // closeLoading(0);
       router.push('/home');
     }).catch(err => {
+      closeLoading(0);
+      console.log(err);
       if(err.response.data.code == 1002){
         message.error('รหัสผ่านไม่ถูกต้อง');
       }else if(err.response.data.code == 1003){
@@ -78,15 +92,15 @@ const Home: NextPage = (props: any) => {
       newLoadings[index] = true;
       return newLoadings;
     });
+  };
 
-    setTimeout(() => {
+  const closeLoading = async (index: number) => {
+
       setLoadings((prevLoadings) => {
         const newLoadings: any = [...prevLoadings];
         newLoadings[index] = false;
         return newLoadings;
       });
-    }, 3000);
-
   };
 
   return (

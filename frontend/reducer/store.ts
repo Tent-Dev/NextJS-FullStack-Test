@@ -1,5 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit'
-import userReducer from './usersReducer'
+import { configureStore, Store } from '@reduxjs/toolkit';
+import userReducer from './usersReducer';
 import { persistStore,
   persistReducer,
   FLUSH,
@@ -8,7 +8,8 @@ import { persistStore,
   PERSIST,
   PURGE,
   REGISTER, } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+import storage from 'redux-persist/lib/storage';
+// import {createWrapper, Context, HYDRATE} from 'next-redux-wrapper';
 
 
 const persistConfig = {
@@ -36,7 +37,14 @@ export let store = configureStore({
 //   },
 // })
 
+// export interface State {
+//   user: any;
+// }
 
+// const makeStore = (context: Context) => store;
+
+// export an assembled wrapper
+// export const wrapper = createWrapper(makeStore);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

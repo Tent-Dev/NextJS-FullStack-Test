@@ -4,8 +4,17 @@ const getParty = () => {
   return api.post("/party");
 };
 
-const getModeratorBoard = () => {
-  return api.get("/test/mod");
+const actionParty = (userId: number,partyId: number, actionType: string) => {
+  let action = {};
+
+  if(actionType === 'leave'){
+    action.party_leave = partyId;
+  }
+  else if(actionType === 'join'){
+    action.party_joined = partyId;
+  }
+
+  return api.patch(`/party/action/${userId}`,action);
 };
 
 const getAdminBoard = () => {
@@ -14,7 +23,7 @@ const getAdminBoard = () => {
 
 const UserService = {
     getParty,
-    getModeratorBoard,
+    actionParty,
     getAdminBoard,
 };
 

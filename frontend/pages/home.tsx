@@ -19,7 +19,6 @@ import { useDispatch, connect } from "react-redux";
 import _ from 'lodash';
 import UserService from "../services/user.service";
 
-
 const antIcon = (
   <LoadingOutlined
     style={{
@@ -51,10 +50,8 @@ const HomeApp: NextPage = (props: any) => {
   },[])
 
   const joinParty = async (id: number) =>{
-    console.log('Update data ' + id);
-    await axios.patch(`http://localhost:3100/api/party/action/${props.post.users.user.userId}`, {
-      party_joined : id
-    }).then(response => {
+
+    UserService.actionParty(props.post.users.user.userId,id,'join').then(response => {
       const newData = dataparty.findIndex( (obj: { partyId: number; }) => obj.partyId == id);
       dataparty[newData].registered = dataparty[newData].registered+1;
       dispatch({
@@ -64,6 +61,7 @@ const HomeApp: NextPage = (props: any) => {
       
       Setdataparty(dataparty);
     });
+
   }
 
   const fetchData = async () =>{
