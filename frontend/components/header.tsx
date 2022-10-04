@@ -5,14 +5,10 @@ import Link from 'next/link'
 import myStyles from '../styles/MyComponent.module.css'
 import { useDispatch, connect } from "react-redux";
 import styled from 'styled-components';
-
-const mainStyle = {
-  primaryColor: '#ff4d4f',
-  dangerColor: '#52118f'
-};
+import mainStyle from '../styles/mainStyle';
 
 const StyleButton = styled(Button)`
-  --btncolor: ${mainStyle.dangerColor};
+  --btncolor: ${mainStyle.primaryColor};
   width: 100%;
   background-color: var(--btncolor);
   border-color: var(--btncolor);
@@ -108,7 +104,7 @@ const HeaderBar = (props: any) => {
     
     return(
         <StylePageHeader
-        className="site-page-header"
+        // className="site-page-header"
         // title="ปาร์ตี้ทั้งหมด"
         children={
         <>

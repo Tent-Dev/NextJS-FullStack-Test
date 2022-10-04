@@ -5,19 +5,16 @@ import Swal from 'sweetalert2'
 import { connect } from "react-redux";
 import _ from 'lodash'
 import styled from 'styled-components';
+import mainStyle from '../styles/mainStyle';
 
 const ItemBox = (props: any) => {
   let mode = props.mode;
   const [btntext,setBtntext] = useState(mode == 'join' ? 'Join' : mode == 'own' ? 'Delete' : 'Leave');
   const [btndisable,setBtndisable] = useState(true);
   const [loadings, setLoadings] = useState([]);
-  const mainStyle = {
-    primaryColor: '#ff4d4f',
-    dangerColor: '#52118f'
-  };
 
   const StyleButton = styled(Button)`
-    --btncolor: ${mode !== 'join' ? mainStyle.primaryColor : mainStyle.dangerColor};
+    --btncolor: ${mode !== 'join' ? mainStyle.dangerColor : mainStyle.primaryColor};
     width: 100%;
     background-color: var(--btncolor);
     border-color: var(--btncolor);
