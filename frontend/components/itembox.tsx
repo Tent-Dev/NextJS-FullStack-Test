@@ -1,4 +1,4 @@
-import { Button, Input, Checkbox, Form, Card, Col, Row } from "antd";
+import { Button, Input, Checkbox, Form, Card, Col, Row, Skeleton } from "antd";
 import LinesEllipsis from 'react-lines-ellipsis'
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
@@ -116,6 +116,9 @@ const ItemBox = (props: any) => {
           // width: 300,
         }}
         cover={
+          // <div>
+          //   <Skeleton.Image active={false} style={{width: 'auto', inlineSize: '-webkit-fill-available'}} />
+          // </div>
           <img
             alt="example"
             src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
