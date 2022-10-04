@@ -5,7 +5,12 @@ const getParty = () => {
 };
 
 const actionParty = (userId: number,partyId: number, actionType: string) => {
-  let action = {};
+  type ActionObj = {
+    party_joined?: Number;
+    party_leave?: Number;
+  };
+
+  let action: ActionObj = {};
 
   if(actionType === 'leave'){
     action.party_leave = partyId;

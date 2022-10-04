@@ -1,22 +1,34 @@
-import type { NextPage } from 'next'
-import Link from 'next/link'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
 import { Button, Input, Checkbox, Form, Card, Col, Row } from "antd";
-import myStyles from '../styles/MyComponent.module.css'
 import LinesEllipsis from 'react-lines-ellipsis'
 import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 import { connect } from "react-redux";
 import _ from 'lodash'
-
+import styled from 'styled-components';
 
 const ItemBox = (props: any) => {
   let mode = props.mode;
   const [btntext,setBtntext] = useState(mode == 'join' ? 'Join' : mode == 'own' ? 'Delete' : 'Leave');
   const [btndisable,setBtndisable] = useState(true);
   const [loadings, setLoadings] = useState([]);
+  const mainStyle = {
+    primaryColor: '#ff4d4f',
+    dangerColor: '#52118f'
+  };
+
+  const StyleButton = styled(Button)`
+    --btncolor: ${mode !== 'join' ? mainStyle.primaryColor : mainStyle.dangerColor};
+    width: 100%;
+    background-color: var(--btncolor);
+    border-color: var(--btncolor);
+    color: white;
+  `;
+
+  const BottomCard = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  `;
 
   const checkJoin = () =>{
     let check = true ;
@@ -71,8 +83,8 @@ const ItemBox = (props: any) => {
       // text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#52118f',
-      cancelButtonColor: '#ff4d4f',
+      confirmButtonColor: mainStyle.dangerColor,
+      cancelButtonColor: mainStyle.primaryColor,
       confirmButtonText: 'ใช่',
       cancelButtonText: 'ยกเลิก'
     }).then(async (result) => {
@@ -96,8 +108,6 @@ const ItemBox = (props: any) => {
           Swal.fire(
             alertsuccess
           )
-
-          // props.data.registered = props.data.registered+1;
       }
     })
   }
@@ -127,19 +137,18 @@ const ItemBox = (props: any) => {
       />
       </div>
       <hr></hr>
-      <div style={{'display': 'flex', 'alignItems': 'center', 'justifyContent': 'space-between'}}>
+      <BottomCard>
         <div>
           {props.data.registered}/{props.data.maxguests}
         </div>
         <div>
-          <Button
-            className={`${myStyles.cbutton} ${mode !== 'join' ? myStyles.cbutton_red : ''}`}
+          <StyleButton
             disabled={btndisable}
             onClick={() => AlertMsg()}
             loading={loadings[0]}
-          >{btntext}</Button>
+          >{btntext}</StyleButton>
         </div>
-      </div>
+      </BottomCard>
       </Card>
     </Col>
     )

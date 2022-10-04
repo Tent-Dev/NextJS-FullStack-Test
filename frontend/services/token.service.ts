@@ -4,7 +4,7 @@ import { store } from '../reducer/store'
 // const router = useRouter();
 
 const getLocalRefreshToken = () => {
-    let user = JSON.parse(localStorage.getItem("persist:root"));
+    let user = JSON.parse(localStorage.getItem("persist:root") || '{}');
     console.log('-----getLocalRefreshToken-----')
     if(user){
         user.refreshToken = JSON.parse(user.refreshToken);
@@ -23,9 +23,8 @@ const getLocalRefreshToken = () => {
   };
   
   const updateLocalAccessToken = async (data: any) => {
-    let user = JSON.parse(localStorage.getItem("persist:root"));
+    let user = JSON.parse(localStorage.getItem("persist:root") || '{}');
     if(user){
-        console.log('USERRRRRRRRRRRRRRRR')
         user.token = data.token;
         user.refreshToken = data.refreshToken;
         user.user = data.user

@@ -11,8 +11,8 @@ const instance = axios.create({
     (config) => {
       const token = TokenService.getLocalAccessToken();
 
-      if (token) {
-        config.headers["authorization"] = token;
+      if (token && config.headers != undefined) {
+        config.headers.authorization = token;
       }
       return config;
     },

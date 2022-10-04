@@ -20,7 +20,6 @@
         3,
         9,
         0,
-        4,
         10
       ],
       "status": "Active"
@@ -113,12 +112,10 @@
       "partyId": 4,
       "creatorId": 2,
       "description": "เที่ยวเชียงใหม่",
-      "registered": 1,
+      "registered": 0,
       "maxguests": "5",
       "image": "",
-      "guest": [
-        1
-      ],
+      "guest": [],
       "status": "Active"
     },
     {
