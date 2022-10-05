@@ -33,6 +33,7 @@ const Main = styled.main`
 
 const Home: NextPage = (props: any) => {
   const [loadings, setLoadings] = useState([]);
+  const [returnRender, setReturnRender] = useState(false);
   const router = useRouter();
   const emailRef = useRef('');
   const passwordRef = useRef('');
@@ -48,6 +49,8 @@ const Home: NextPage = (props: any) => {
   useEffect(() =>{
     if(_.has(props, 'post') && _.has(props.post, 'users') && _.has(props.post.users, 'user')){
       router.push('/home');
+    }else{
+      setReturnRender(true);
     }
   },[])
   
@@ -88,6 +91,7 @@ const Home: NextPage = (props: any) => {
   };
 
   return (
+    returnRender ?
     <div className={styles.container}>
       <Main>
         <div>
@@ -151,7 +155,7 @@ const Home: NextPage = (props: any) => {
         </div>
         </Form>
       </Main>
-    </div>
+    </div> : <></>
   )
 }
 
