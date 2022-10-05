@@ -31,8 +31,6 @@ const Main = styled.main`
   align-items: center;
 `;
 
-
-
 const Home: NextPage = (props: any) => {
   const [loadings, setLoadings] = useState([]);
   const router = useRouter();
@@ -47,15 +45,11 @@ const Home: NextPage = (props: any) => {
     passwordRef.current = e.target.value
   }
 
-  // useEffect(() =>{
-  //   if(_.has(props, 'post') && _.has(props.post, 'users')){
-  //     router.push('/home');
-  //   }
-  // },[])
-
-  // useEffect(() =>{
-  //   console.log(props.test)
-  // },[])
+  useEffect(() =>{
+    if(_.has(props, 'post') && _.has(props.post, 'users') && _.has(props.post.users, 'user')){
+      router.push('/home');
+    }
+  },[])
   
   const clickLogin = async () =>{
     await enterLoading(0);

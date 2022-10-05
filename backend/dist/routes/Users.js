@@ -181,7 +181,7 @@ router.post('/user/add', async (req, res) => {
 router.put('/user/update/:userId', requireJWTAuth, async (req, res) => {
     await db.read();
     let userId_num = Number(req.params.userId);
-    let JWT_CHECK = jwt.verify(req.headers.authorization, SECRET);
+    let JWT_CHECK = jwt.verify(req.headers.authorization || '{}', SECRET);
     const users = db.data.user.filter((obj) => {
         if (obj.userId === userId_num) {
             return obj;
@@ -312,7 +312,7 @@ router.post('/party/add', requireJWTAuth, async (req, res) => {
 });
 router.put('/party/update/:partyId', requireJWTAuth, async (req, res) => {
     await db.read();
-    let JWT_CHECK = jwt.verify(req.headers.authorization, SECRET);
+    let JWT_CHECK = jwt.verify(req.headers.authorization || '{}', SECRET);
     const partys = db.data.party.filter((obj) => {
         let partyId_num = Number(req.params.partyId);
         if (obj.partyId === partyId_num) {
@@ -340,7 +340,7 @@ router.put('/party/update/:partyId', requireJWTAuth, async (req, res) => {
 router.patch('/party/action/:userId', requireJWTAuth, async (req, res) => {
     await db.read();
     let userId_num = Number(req.params.userId);
-    let JWT_CHECK = jwt.verify(req.headers.authorization, SECRET);
+    let JWT_CHECK = jwt.verify(req.headers.authorization || '{}', SECRET);
     const users = db.data.user.filter((obj) => {
         if (obj.userId === userId_num) {
             return obj;
@@ -402,7 +402,7 @@ router.patch('/party/action/:userId', requireJWTAuth, async (req, res) => {
 });
 router.delete('/party/delete/:partyId', requireJWTAuth, async (req, res) => {
     await db.read();
-    let JWT_CHECK = jwt.verify(req.headers.authorization, SECRET);
+    let JWT_CHECK = jwt.verify(req.headers.authorization || '{}', SECRET);
     let partyId_num = Number(req.params.partyId);
     const partys = db.data.party.filter((obj) => {
         if (obj.partyId === partyId_num) {

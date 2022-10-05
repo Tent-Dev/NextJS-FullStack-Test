@@ -91,7 +91,7 @@ const HeaderBar = (props: any) => {
       />
     );
 
-    const clickLogout = () =>{
+    const clickLogout = async () =>{
 
       dispatch({
         type: 'REMOVE'
@@ -99,7 +99,10 @@ const HeaderBar = (props: any) => {
 
       localStorage.removeItem('persist:root');
 
-      router.push('/')
+      setTimeout(() =>{
+        router.push('/');
+      },1000)
+      
     }
     
     return(

@@ -7,7 +7,7 @@ function userReducer(state = {}, action: {[key: string]: any}) {
       case 'UPDATE_USER':
         return { ...state, user: action.data }
       case 'REMOVE':
-        return state
+        return state = {}
       default:
         return state
     }
