@@ -15,12 +15,6 @@ import styled from 'styled-components';
 
 // import {wrapper, State} from '../reducer/store';
 
-// export const getServerSideProps = wrapper.getServerSideProps(store => ({req, res,}) => {
-//   let st = store.getState();
-//   console.log(st);
-//   return {props : {test: st}};
-// });
-
 const Main = styled.main`
   min-height: 100vh;
   padding: 4rem 0;
