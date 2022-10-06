@@ -18,6 +18,11 @@ import axios from 'axios';
 import { useDispatch, connect } from "react-redux";
 import _ from 'lodash';
 import UserService from "../services/user.service";
+import styled from 'styled-components';
+
+const DivDataList = styled.div`
+  width: -webkit-fill-available;
+`;
 
 const antIcon = (
   <LoadingOutlined
@@ -96,6 +101,39 @@ const HomeApp: NextPage = (props: any) => {
     
   }
 
+  const InfiniteScrollWarp = () =>{
+    return(
+      <InfiniteScroll
+        dataLength={dataparty.length} //This is important field to render the next data
+        next={fetchData}
+        hasMore={hasmore}
+        loader={<div style={{'textAlign': 'center', 'marginTop': 24}}><Spin indicator={antIcon} size='large'/></div>}
+        endMessage={
+          <p style={{ textAlign: 'center', 'marginTop': 24, 'color': 'gray' }}>
+            <b>ผลลัพธ์การค้นหาสิ้นสุดแล้ว</b>
+          </p>
+        }
+        // below props only if you need pull down functionality
+        // refreshFunction={fetchData}
+        // pullDownToRefresh
+        // pullDownToRefreshThreshold={50}
+        // pullDownToRefreshContent={
+        //   <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
+        // }
+        // releaseToRefreshContent={
+        //   <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
+        // }
+        style={{ overflow: 'hidden' }}
+      >
+        <Row gutter={[16, 16]}>
+          {dataparty.map((element: { partyId: any; }) => (
+            <ItemBox mode={'join'} data={element} key={element.partyId} joinParty={joinParty}/>
+          ))}
+        </Row>
+      </InfiniteScroll>
+    )
+  }
+
   return(
     <>
       <HeaderBar
@@ -111,36 +149,9 @@ const HomeApp: NextPage = (props: any) => {
         {showspin ? <Spin indicator={antIcon} size='large'/> : dataparty.length == 0 && !showspin ?
         <Empty description='ไม่พบรายการปาร์ตี้' />
         : 
-        <div style={{'width' : '-webkit-fill-available'}}>
-          <InfiniteScroll
-            dataLength={dataparty.length} //This is important field to render the next data
-            next={fetchData}
-            hasMore={hasmore}
-            loader={<div style={{'textAlign': 'center', 'marginTop': 24}}><Spin indicator={antIcon} size='large'/></div>}
-            endMessage={
-              <p style={{ textAlign: 'center', 'marginTop': 24, 'color': 'gray' }}>
-                <b>ผลลัพธ์การค้นหาสิ้นสุดแล้ว</b>
-              </p>
-            }
-            // below props only if you need pull down functionality
-            // refreshFunction={fetchData}
-            // pullDownToRefresh
-            // pullDownToRefreshThreshold={50}
-            // pullDownToRefreshContent={
-            //   <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
-            // }
-            // releaseToRefreshContent={
-            //   <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
-            // }
-            style={{ overflow: 'hidden' }}
-          >
-            <Row gutter={[16, 16]}>
-              {dataparty.map((element: { partyId: any; }) => (
-                <ItemBox mode={'join'} data={element} key={element.partyId} joinParty={joinParty}/>
-              ))}
-            </Row>
-          </InfiniteScroll>
-          </div>
+        <DivDataList>
+          <InfiniteScrollWarp/>
+        </DivDataList>
         }
         </main>
       </div>
