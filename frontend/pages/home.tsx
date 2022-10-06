@@ -19,6 +19,8 @@ import { useDispatch, connect } from "react-redux";
 import _ from 'lodash';
 import UserService from "../services/user.service";
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
+import mainStyle from '../styles/mainStyle';
 
 const DivDataList = styled.div`
   width: -webkit-fill-available;
@@ -92,8 +94,24 @@ const HomeApp: NextPage = (props: any) => {
       }).catch(err =>{
         console.log(err);
   
-        if(err.response.data.code == 1000){
+        if(_.has(err.response, 'data') && err.response.data.code == 1000){
           router.push(err.response.data.redirectTo);
+        }else{
+          Setshowspin(false);
+          Sethasmore(false);
+
+          Swal.fire({
+            title: 'เกิดข้อผิดพลาด',
+            text: err,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonColor: mainStyle.dangerColor,
+            cancelButtonColor: mainStyle.primaryColor,
+            confirmButtonText: 'ปิด',
+            //cancelButtonText: 'ปิด'
+          }).then(async (result) => {
+          })
+          
         }
       });
 
