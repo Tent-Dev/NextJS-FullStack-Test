@@ -1,7 +1,7 @@
 import api from "./api";
 
-const getParty = () => {
-  return api.post("/party");
+const getParty = (params : object) => {
+  return api.post("/party", params);
 };
 
 const actionParty = (userId: number,partyId: number, actionType: string) => {

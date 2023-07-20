@@ -9,7 +9,7 @@ import { Button, Input, Checkbox, Form, Card, PageHeader, Row, Empty } from "ant
 import myStyles from '../styles/MyComponent.module.css'
 import ItemBox from '../components/itembox'
 import dataDummy from '../components/dummydata'
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import HeaderBar from '../components/header';
@@ -39,8 +39,9 @@ const HomeApp: NextPage = (props: any) => {
   const dispatch = useDispatch();
   const [dataparty,Setdataparty]: any[] = useState([]);
   const [showspin,Setshowspin] = useState(true);
-  const [hasmore,Sethasmore] = useState(true);
+  const [hasmore,Sethasmore] = useState(false);
   const router = useRouter();
+  const pageNumber = useRef(0);
 
   const clickCreate = () =>{
     router.push('/create')
@@ -72,26 +73,25 @@ const HomeApp: NextPage = (props: any) => {
   }
 
   const fetchData = async () =>{
-    // axios.defaults.headers.common['Authorization'] = props.post.users.token;
-    // await axios.post('http://localhost:3100/api/party').then(response => {
-    //   console.log(response.data);
-    //   Setdataparty(response.data);
-    //   Sethasmore(false);
-    //   Setshowspin(false);
-    // }).catch(err =>{
-    //   console.log(err);
+    console.log('ccccc start=> ', pageNumber.current)
+    let params = {
+      pageNumber: pageNumber.current,
+    }
 
-    //   if(err.response.data.code == 1000){
-    //     router.push(err.response.data.redirectTo);
-    //   }
-    // });
-
-    const data = await UserService.getParty().then(response => {
+    await UserService.getParty(params).then(response => {
         console.log(response.data);
-        Setdataparty(response.data);
-        Sethasmore(false);
+
+        if(response.data.length > 0){
+          console.log('ccccc=> ', pageNumber.current)
+          pageNumber.current = pageNumber.current + 1;
+          console.log('ccccc end=> ', pageNumber.current)
+          Sethasmore(true);
+        }else{
+          Sethasmore(false);
+        }
+        Setdataparty((prev: any) => {return [...prev, ...response.data]});
         Setshowspin(false);
-      }).catch(err =>{
+    }).catch(err =>{
         console.log(err);
   
         if(_.has(err.response, 'data') && err.response.data.code == 1000){
@@ -113,7 +113,7 @@ const HomeApp: NextPage = (props: any) => {
           })
           
         }
-      });
+    });
 
     // console.log(data);
     

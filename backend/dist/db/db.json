@@ -7,7 +7,10 @@
       "email": "admin@admin.com",
       "password": "$2b$10$sWhgNyQNVB1LfGiANIBuA.YKr/Y1zJApeqpiVN.YvQbrMHdlEXH/u",
       "party_joined": [
-        0
+        0,
+        12,
+        15,
+        10
       ],
       "status": "Active"
     },
@@ -177,11 +180,12 @@
       "partyId": 10,
       "creatorId": 1,
       "description": "test",
-      "registered": 1,
+      "registered": 2,
       "maxguests": "123",
       "image": "",
       "guest": [
-        1
+        1,
+        0
       ],
       "status": "Active"
     },
@@ -191,6 +195,110 @@
       "description": "ทดสอบ",
       "registered": 0,
       "maxguests": "5",
+      "image": "",
+      "guest": [],
+      "status": "Active"
+    },
+    {
+      "partyId": 12,
+      "creatorId": 0,
+      "description": "test 1",
+      "registered": 1,
+      "maxguests": "1",
+      "image": "",
+      "guest": [
+        0
+      ],
+      "status": "Active"
+    },
+    {
+      "partyId": 13,
+      "creatorId": 0,
+      "description": "test 2",
+      "registered": 0,
+      "maxguests": "1",
+      "image": "",
+      "guest": [],
+      "status": "Active"
+    },
+    {
+      "partyId": 14,
+      "creatorId": 0,
+      "description": "test 3",
+      "registered": 0,
+      "maxguests": "2",
+      "image": "",
+      "guest": [],
+      "status": "Active"
+    },
+    {
+      "partyId": 15,
+      "creatorId": 0,
+      "description": "test 4",
+      "registered": 1,
+      "maxguests": "4",
+      "image": "",
+      "guest": [
+        0
+      ],
+      "status": "Active"
+    },
+    {
+      "partyId": 16,
+      "creatorId": 0,
+      "description": "test 5",
+      "registered": 0,
+      "maxguests": "5",
+      "image": "",
+      "guest": [],
+      "status": "Active"
+    },
+    {
+      "partyId": 17,
+      "creatorId": 0,
+      "description": "test 6",
+      "registered": 0,
+      "maxguests": "6",
+      "image": "",
+      "guest": [],
+      "status": "Active"
+    },
+    {
+      "partyId": 18,
+      "creatorId": 0,
+      "description": "test 7",
+      "registered": 0,
+      "maxguests": "7",
+      "image": "",
+      "guest": [],
+      "status": "Active"
+    },
+    {
+      "partyId": 19,
+      "creatorId": 0,
+      "description": "test 8",
+      "registered": 0,
+      "maxguests": "8",
+      "image": "",
+      "guest": [],
+      "status": "Active"
+    },
+    {
+      "partyId": 20,
+      "creatorId": 0,
+      "description": "test 9",
+      "registered": 0,
+      "maxguests": "9",
+      "image": "",
+      "guest": [],
+      "status": "Active"
+    },
+    {
+      "partyId": 21,
+      "creatorId": 0,
+      "description": "test 10",
+      "registered": 0,
+      "maxguests": "1",
       "image": "",
       "guest": [],
       "status": "Active"

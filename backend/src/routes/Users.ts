@@ -297,12 +297,15 @@ router.put('/user/force', requireJWTAuth, async (req, res) =>{
 
 router.post('/party', requireJWTAuth, async (req, res) =>{
    await db.read();
+   const pageNumber = req.body.pageNumber || 0;
+   const limit = parseInt('6');
+   let startIndex = pageNumber * limit;
 
    let partys = db.data.party.filter((obj: { status: string}) =>{
       if (obj.status == 'Active'){
          return obj;
       }
-   });
+   }).slice(startIndex, limit + startIndex)
 
    if('creatorId' in req.body){
 
