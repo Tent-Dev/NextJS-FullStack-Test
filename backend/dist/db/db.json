@@ -6,7 +6,9 @@
       "lastName": "Lastname",
       "email": "admin@admin.com",
       "password": "$2b$10$sWhgNyQNVB1LfGiANIBuA.YKr/Y1zJApeqpiVN.YvQbrMHdlEXH/u",
-      "party_joined": [],
+      "party_joined": [
+        0
+      ],
       "status": "Active"
     },
     {
@@ -66,13 +68,14 @@
       "partyId": 0,
       "creatorId": 0,
       "description": "หาคนเล่น ROV",
-      "registered": 1,
+      "registered": 2,
       "maxguests": "5",
       "image": "",
       "guest": [
-        1
+        1,
+        0
       ],
-      "status": "Active"
+      "status": "Deactive"
     },
     {
       "partyId": 1,
@@ -84,7 +87,7 @@
       "guest": [
         1
       ],
-      "status": "Active"
+      "status": "Deactive"
     },
     {
       "partyId": 2,
@@ -180,6 +183,16 @@
       "guest": [
         1
       ],
+      "status": "Active"
+    },
+    {
+      "partyId": 11,
+      "creatorId": 0,
+      "description": "ทดสอบ",
+      "registered": 0,
+      "maxguests": "5",
+      "image": "",
+      "guest": [],
       "status": "Active"
     }
   ]

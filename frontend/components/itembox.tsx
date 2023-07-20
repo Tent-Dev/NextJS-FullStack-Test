@@ -31,7 +31,7 @@ const ItemBox = (props: any) => {
     let check = true ;
     if(mode == 'join'){
       check = props.data.registered >= props.data.maxguests ? true : false;
-      if(_.includes(props.post.users.user.party_joined,props.data.partyId)){
+      if(props?.post?.users?.user?.party_joined && _.includes(props.post.users.user.party_joined,props.data.partyId)){
         check = true;
         setBtntext('Joined');
       }

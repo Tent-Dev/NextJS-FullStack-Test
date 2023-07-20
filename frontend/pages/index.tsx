@@ -51,18 +51,19 @@ const Home: NextPage = (props: any) => {
   const clickLogin = async () =>{
     await enterLoading(0);
 
-    AuthService.userLogin(emailRef.current, passwordRef.current).then(() =>{
+    AuthService.userLogin(emailRef.current, passwordRef.current).then((res) =>{
       // closeLoading(0);
-      router.push('/home');
+      console.log('asd==> ', res)
+      if(res.token){
+        router.push('/home');
+      }else{
+        closeLoading(0);
+        message.error(res.message);
+      }
     }).catch(err => {
       closeLoading(0);
-      console.log(err);
-      if(err.response.data.code == 1002){
-        message.error('รหัสผ่านไม่ถูกต้อง');
-      }else if(err.response.data.code == 1003){
-        message.error('ไม่พบบัญชีผู้ใช้');
-      }
-      console.log(err)
+      message.error(err.message);
+      console.log('xxxxxx==> ', err)
     });
   }
 

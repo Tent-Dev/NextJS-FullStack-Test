@@ -94,7 +94,7 @@ router.post('/user/login', async (req, res) =>{
          }else{
             res.status(400).json({
                code: 1002,
-               message: 'Password is not correct'
+               message: 'รหัสผ่านไม่ถูกต้อง'
             });
             return;
          }
@@ -102,7 +102,7 @@ router.post('/user/login', async (req, res) =>{
    }else{
       res.status(400).json({
          code: 1003,
-         message: 'User not found'
+         message: 'ไม่พบบัญชีผู้ใช้'
       });
       return;
    }
