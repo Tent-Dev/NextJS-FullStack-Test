@@ -18,14 +18,14 @@ const CreateParty: NextPage = (props: any) => {
   const [loadings, setLoadings] = useState([]);
   const router = useRouter();
   const descRef = useRef('');
-  const maxguestsRef = useRef('');
+  const maxguestsRef = useRef(0);
 
   const onDescChange = (e: { target: { value: string } }) =>{
     descRef.current = e.target.value
   }
 
   const onMaxguestChange = (e: { target: { value: string } }) =>{
-    maxguestsRef.current = e.target.value
+    maxguestsRef.current = parseInt(e.target.value)
   }
 
   useEffect(() =>{
@@ -38,7 +38,13 @@ const CreateParty: NextPage = (props: any) => {
 
   const clickCreate = async () =>{
 
-    let params: Object = {
+    type createPartyObj = {
+      description: string,
+      maxguests: Number,
+      creatorId: Number
+  }
+
+    let params: createPartyObj = {
         description: descRef.current,
         maxguests: maxguestsRef.current,
         creatorId: props.post.users.user.userId
