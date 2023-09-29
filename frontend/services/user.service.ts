@@ -26,8 +26,13 @@ const getAdminBoard = () => {
   return api.get("/test/admin");
 };
 
+const createParty = (params: Object) => {
+  return api.post(`/party/add`, params);
+}
+
 const UserService = {
     getParty,
+    createParty,
     actionParty,
     getAdminBoard,
 };

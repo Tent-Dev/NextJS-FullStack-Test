@@ -10,7 +10,9 @@
         0,
         12,
         15,
-        10
+        10,
+        21,
+        22
       ],
       "status": "Active"
     },
@@ -297,10 +299,24 @@
       "partyId": 21,
       "creatorId": 0,
       "description": "test 10",
-      "registered": 0,
+      "registered": 1,
       "maxguests": "1",
       "image": "",
-      "guest": [],
+      "guest": [
+        0
+      ],
+      "status": "Active"
+    },
+    {
+      "partyId": 22,
+      "creatorId": 0,
+      "description": "testNewApi",
+      "registered": 1,
+      "maxguests": "3",
+      "image": "",
+      "guest": [
+        0
+      ],
       "status": "Active"
     }
   ]

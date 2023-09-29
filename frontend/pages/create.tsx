@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from 'react'
 import axios from 'axios';
 import { connect } from "react-redux";
 import _ from 'lodash';
+import UserService from '../services/user.service';
 
 const CreateParty: NextPage = (props: any) => {
   const [loadings, setLoadings] = useState([]);
@@ -36,17 +37,20 @@ const CreateParty: NextPage = (props: any) => {
 },[])
 
   const clickCreate = async () =>{
-    await enterLoading(0);
 
-    await axios.post('http://localhost:3100/api/party/add', {
+    let params: Object = {
         description: descRef.current,
         maxguests: maxguestsRef.current,
         creatorId: props.post.users.user.userId
-    }).then(response => {
-        router.back();
+    }
+
+    await enterLoading(0);
+
+    await UserService.createParty(params).then(res => {
+      router.back();
     }).catch(error => {
       console.log(error.response.data.message)
-   });
+    })
   }
 
   const enterLoading = async (index: number) => {
