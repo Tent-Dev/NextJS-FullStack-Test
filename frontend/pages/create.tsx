@@ -40,8 +40,8 @@ const CreateParty: NextPage = (props: any) => {
 
     type createPartyObj = {
       description: string,
-      maxguests: Number,
-      creatorId: Number
+      maxguests: number,
+      creatorId: number
   }
 
     let params: createPartyObj = {

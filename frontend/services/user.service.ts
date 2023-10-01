@@ -6,8 +6,8 @@ const getParty = (params : object) => {
 
 const actionParty = (userId: number,partyId: number, actionType: string) => {
   type ActionObj = {
-    party_joined?: Number;
-    party_leave?: Number;
+    party_joined?: number;
+    party_leave?: number;
   };
 
   let action: ActionObj = {};
